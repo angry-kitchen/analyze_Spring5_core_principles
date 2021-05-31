@@ -1,0 +1,210 @@
+<html><head><meta charset="utf-8"><title>07 别整虚的！揭开Spring IoC、DI的神秘面纱-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        07 别整虚的！揭开Spring IoC、DI的神秘面纱
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-10 14:43:39
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img3.sycdn.imooc.com/5ece096b0001908e06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">没有引发任何行动的思想都不是思想，而是梦想。 —— 马丁<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">说到 Spring 框架，人们往往大谈特谈一些似乎很高深的东西，比如依赖注入DI，控制反转 IoC，面向切面编程 AOP 等等。那么 DI 和 IoC 究竟分别是什么？它们又是怎么来的？背后隐藏了什么东西呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">“不要给我们打电话，我们会给你打电话（don‘t call us, we‘ll call you）”这是著名的好莱坞原则。在好莱坞，把简历递交给演艺公司后就只有回家等待。由演艺公司对整个娱乐项的完全控制，演员只能被动式的接受公司的差使,在需要的环节中，完成自己的演出。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">IoC 是 Inversion of Control 的简称，IoC 的原理就是基于好莱坞原则，所有的组件都是被动的（Passive），所有的组件初始化和调用都由<strong>容器</strong>负责。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>IoC（控制反转）：</strong> 全称为：Inverse of Control。从字面上理解就是控制反转了，将对在自身对象中的一个内置对象的控制反转，反转后不再由自己本身的对象进行控制这个内置对象的创建，而是由第三方系统去控制这个内置对象的创建。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>DI（依赖注入）：</strong> 全称为 Dependency Injection，意思自身对象中的内置对象是通过注入的方式进行创建。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">那么 <strong>IoC</strong> 和 <strong>DI</strong> 这两者又是什么关系呢？</p>
+</div><div class="cl-preview-section"><h1 id="spring-ioc-容器">Spring IoC 容器</h1>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">IoC 就是一种软件设计思想，DI 是这种软件设计思想的一个实现。而 Spring 中的核心机制就是 DI。为什么是 DI 呢？这有一段典故：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">“<em>The question is, what aspect of control are [they] inverting?</em>” Martin Fowler posed this question about Inversion of Control (IoC) on his site in 2004. Fowler suggested renaming the principle to make it more self-explanatory and came up with <em>Dependency Injection</em>.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean 是 spring 的原材料，所以我们先来讲一下怎么理解 Bean。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean 在 Spring 中是可以复用的组件，Spring 帮忙管理这些组件，如果想要在 Spring 中使用组件时，无需实例化，可以直接使用。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一个简单的比喻：Spring 是一个外包公司即乙方，Bean 是这个公司的基层员工，甲方将项目外包给乙方，而不用关心乙方如何招聘员工，在项目紧急需要外包人员时直接使用即可。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 的本质就是一个 Bean 工厂（BeanFactory）或者说 Bean 容器，它按照我们的要求，生产我们需要的各种各样的 Bean，提供给我们使用。只是在生产 Bean 的过程中，需要解决 Bean 之间的依赖问题，才引入了依赖注入（DI）这种技术。也就是说依赖注入是 BeanFactory 生产 Bean 时为了解决 Bean 之间的依赖的一种技术而已。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">具体的控制反转是如何操作的，Spring 启动的时候都做了什么事情，怎么将 Bean 放入到容器，在使用的时候又是如何获取 Bean 的（拿出对应的方法进行讲解）</p>
+</div><div class="cl-preview-section"><h1 id="beanfactory-的形成">BeanFactory 的形成</h1>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory 是访问 Bean 容器的根接口，它是一个 Bean 容器的基本客户端视图。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">先让我们看看 BeanFactory 的前生后世吧！</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdeac300010b2c03720446.jpg" data-original="//img1.sycdn.imooc.com/5ecdeac300010b2c03720446.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory 有四个重要的子接口：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>SimpleJndiBeanFactory</strong> 是 spring beanFactory 接口的基于 jndi 的简单实现。不支持枚举 Bean 定义，故不需要实现 ListableBeanFactory 接口。这个 Bean 工厂可以解析制定名称的 jndi 名称，在 J2EE 应用中，jndi 名称的命名空间为"java:/comp/env/"。这个 Bean 工厂主要和 Spring 的 CommonAnnotationBeanPostProcessor 联合使用；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>ListableBeanFactory</strong> 是 BeanFactory 接口的扩展接口，它可以枚举所有的 Bean 实例，而不是客户端通过名称一个一个的查询得出所有的实例。要预加载所有的 Bean 定义的 BeanFactory 可以实现这个接口来。该接口定义了访问容器中 Bean 基本信息的若干方法，如查看 Bean 的个数、获取某一类型 Bean 的配置名、查看容器中是否包括某一 Bean 等方法；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>HierarchicalBeanFactory</strong> 是一个 Beanfactory 子接口实现，可以作为层次结构的一部分。相对应的 bean Factory 方法 setParentBeanFactory 允许在一个可配置 BeanFactory 中设置它们的父 Beanfactory；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AutowireCapableBeanFactory</strong> 是 BeanFactory 接口的扩展实现，假如它们想要对已经存在的 Bean 暴露它的功能，实现它就能实现自动装配功能。定义了将容器中的 Bean 按某种规则（如按名字匹配、按类型匹配等）进行自动装配的方法；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>ConfigurableBeanFactory</strong> 是一个配置接口，大部分 BeanFactory 实现了这个接口。这个接口提供了对一个 BeanFactory 进行配置的便利方法，加上 BeanFactory 接口的客户端方法。增强了 IoC 容器的可定制性，它定义了设置类装载器、属性编辑器、容器初始化后置处理器等方法；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>ConfigurableListableBeanFactory</strong> 它同时继承了 ListableBeanFactory，AutowireCapableBeanFactory 和ConfigurableBeanFactory，提供了对 Bean 定义的分析和修改的便利方法，同时也提供了对单例的预实例化。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory的形成可不是一蹴而就的，它的形成过程也经历了一番波折。</p>
+</div><div class="cl-preview-section"><h3 id="形成过程">形成过程</h3>
+</div><div class="cl-preview-section"><h4 id="出生" style="font-size: 26px;">1. 出生</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory 有四个子接口，添加了四种不同的能力：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdea0700019ae104500207.jpg" data-original="//img1.sycdn.imooc.com/5ecdea0700019ae104500207.jpg" alt="图片描述"><br>
+分别是：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>SimpleJndiBeanFactory</strong>：支持 jndi；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AutowireCapableBeanFactory</strong>：支持自动装配；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>HierarchicalBeanFactory</strong>：支持层次结构，ConfigurableListableBeanFactory 实现了 HierarchicalBeanFactory，提供了可配置功能；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>ListableBeanFactory</strong>：支持枚举。</p>
+</div><div class="cl-preview-section"><h4 id="长大成人" style="font-size: 26px;">2. 长大成人</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean 经过两次进化，到 DefaultListableBeanFactory，完善了 Bean 容器的功能。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">DefaultListableBeanFactory 实现 AbstractAutowireCapableBeanFactory<br>
+，ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable 等多个接口。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdea180001f3bc04250429.jpg" data-original="//img1.sycdn.imooc.com/5ecdea180001f3bc04250429.jpg" alt="图片描述"><br>
+此时，DefaultListableBeanFactory 已经成人，可以独立参加工作了！</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">javaBean：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdea29000192de04280388.jpg" data-original="//img1.sycdn.imooc.com/5ecdea29000192de04280388.jpg" alt="图片描述"><br>
+DefaultListableBeanFactory 测试类：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdea3800019e3d08820646.png" data-original="//img1.sycdn.imooc.com/5ecdea3800019e3d08820646.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h4 id="发展" style="font-size: 26px;">3. 发展</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">XmlBeanFactory 通过从 xml 文件中读取 Bean 的定义和依赖。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdeaed00012adf04660473.jpg" data-original="//img1.sycdn.imooc.com/5ecdeaed00012adf04660473.jpg" alt="图片描述"><br>
+xmlBeanFactory 可以通过 xml 配置方式，减少我们的代码。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>实例</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">文件目录<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ecdeb0800010a8604300623.jpg" data-original="//img1.sycdn.imooc.com/5ecdeb0800010a8604300623.jpg" alt="图片描述"><br>
+HelloBean 如上例所示。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">配置文件：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdeb240001ef9509770168.jpg" data-original="//img1.sycdn.imooc.com/5ecdeb240001ef9509770168.jpg" alt="图片描述"><br>
+测试用例：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdeb3e0001222a06400297.jpg" data-original="//img1.sycdn.imooc.com/5ecdeb3e0001222a06400297.jpg" alt="图片描述"><br>
+<strong>自己写的代码、测试用例使用代码框的形式展示</strong></p>
+</div><div class="cl-preview-section"><h1 id="总结">总结</h1>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们为什么需要 Spring 框架来给我们提供这个 BeanFactory 的功能呢？原因是一般我们认为是，可以将原来硬编码的依赖，通过 Spring 这个 BeanFactory 这个工长来注入依赖，也就是说原来只有依赖方和被依赖方，现在我们引入了第三方——Spring 这个 BeanFactory，由它来解决 Bean 之间的依赖问题，达到了松耦合的效果；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这个只是原因之一，还有一个更加重要的原因：在没有 Spring 这个 BeanFactory 之前，我们都是直接通过 new 来实例化各种对象，现在各种对象 Bean 的生产都是通过 BeanFactory 来实例化的，这样的话，Spring 这个BeanFactory 就可以在实例化 Bean 的过程中，做一些小动作——在实例化 Bean 的各个阶段进行一些额外的处理，也就是说 BeanFactory 会在 Bean 的生命周期的各个阶段中对 Bean 进行各种管理，并且 Spring 将这些阶段通过各种接口暴露给我们，让我们可以对 Bean 进行各种处理，我们只要让 Bean 实现对应的接口，那么 Spring 就会在 Bean 的生命周期调用我们实现的接口来处理该 Bean。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2019">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            06 Spring 5.x源代码编译并导入到eclipse或者ide
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2021">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            08 青出于蓝而胜于蓝之揭秘Spring容器ApplicationContext
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img1.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

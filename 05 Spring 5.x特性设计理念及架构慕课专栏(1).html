@@ -1,0 +1,247 @@
+<html><head><meta charset="utf-8"><title>05 Spring 5.x特性、设计理念及架构-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        05 Spring 5.x特性、设计理念及架构
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-07-30 10:00:33
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img3.sycdn.imooc.com/5ece091600013f3a06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">学习这件事不在乎有没有人教你，最重要的是在于你自己有没有觉悟和恒心。 —— 法布尔<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="spring-5.x-出现的背景" style="font-size: 30px;">spring 5.x 出现的背景</h2>
+</div><div class="cl-preview-section"><h3 id="java-8-占据统治地位">Java 8 占据统治地位</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">据最新的调查：64% 的 Java 开发者使用 Java 8 作为生产环境的主要平台。情况似乎是这样，Java 开发者正在最终放弃 Java 7，但接纳 Java 9 的步伐相对缓慢。有意思的是，尽管有采纳 Java 11 的趋势，但这是一个缓慢的开始。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde7f10001b30210800584.jpg" data-original="//img1.sycdn.imooc.com/5ecde7f10001b30210800584.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="反应式编程的发展">反应式编程的发展</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">反应式编程（reactive programming）又叫响应式编程，是一种基于数据流 (data stream) 和变化传递 （propagation of change）的声明式 (declarative) 的编程范式。它带来了更短的处理时间和更高的硬件利用率，从而降低了运营成本。现在运行的很多大型系统都是基于响应式宣言及其原则打造的。LinkedIn、Twitter、Facebook 等很多企业使用的系统都是基于非同步和非堵塞 I/O 技术架构，因此他们的应用程序得以优化，能够最大化地利用硬件资源。这是打造可扩展型应用程序的新方法，而且正在迅速发展。</p>
+</div><div class="cl-preview-section"><h3 id="谷歌宣布-kotlin-成为-android-开发首选语言">谷歌宣布 Kotlin 成为 Android 开发首选语言</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">自从 2017 年 Google 宣布 Kotlin 成为 Android 官方开发语言之后，Kotlin 受到广大 Android 开发者的追捧。其强大的安全性，简洁性和与 Java 的互操作性，为开发者带来了耳目一新的开发体验，也极大提升了 Android 原生代码的开发效率。</p>
+</div><div class="cl-preview-section"><h2 id="spring-5.x-新特性" style="font-size: 30px;">Spring 5.x 新特性</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 与时俱进，充分吸收新的营养，加入自己的体系。Spring 的新特性主要如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde7fb0001d7ef09260387.png" data-original="//img1.sycdn.imooc.com/5ecde7fb0001d7ef09260387.png" alt="图片描述"><br>
+总体上来说，spring 5.x 的特性可以分为以下几类：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;"><strong>支持更高版本的 JDK（8及以上)：</strong> 将不支持 jdk8 以下版本；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;"><strong>核心框架的修订：</strong> 由于 jdk8 反射的增强，Spring 5 支持有效获取 Method 的参数支持 @Nullable 和 @NotNull 注解提供了基于 Java 8 默认方法构建的选择性声明；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;"><strong>核心容器更新：</strong> 支持候选组件索引，可以替代类路径扫描。该支持已被添加到类路径扫描器的候选组件标识步骤的快捷方式中。GenericApplicationContext 和 AnnotationConfigApplicationContext 中实现函数式编程风格。对接口方法上的事务、缓存和异步注释的一致检测。XML 配置名称空间简化为无版本模式；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;"><strong>使用 Kotlin 进行函数式编程：</strong> 引入了对 JetBrains Kotlin 语言的支持；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;"><strong>反应式编程模型。</strong></p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="spring-设计理念" style="font-size: 30px;">Spring 设计理念</h2>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>可扩展性：</strong> Spring 为你在每个层次提供选择权。Spring 允许您尽可能推迟设计决策。例如，您可以通过配置切换持久化提供方，而无需更改代码。Spring 提供灵活的方式和许多其他基础设施问题和与第三方API 的集成；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>兼容性：</strong> 一种体系容纳不同的其它框架。Spring 并不干预其它框架如何完成工作，而是通过适配器的方式兼容其它框架。进而支持各种不同角度的应用程序需求；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>维护性：</strong> 保持强大的向后兼容性。Spring 的版本之间尽量控制会对升级造成负担的改变。另外，Spring 支持精心选择的 JDK 版本和第三方库，以方便维护依赖于 Spring 的应用程序和库；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>用户友好的 API 设计：</strong> 强调 API 设计，Spring 团队投入了大量的时间和精力来开发易用的 API，以便这些API可以适用于许多版本、许多年；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>高质量代码：</strong> 制定高标准的代码质量。Spring 框架非常强调有意义的、保持同步的和精确的 javadoc。它是少数几个可以声明代码结构干净的项目之一，Spring 的包之间没有循环依赖关系。</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="spring-5.x-总体架构" style="font-size: 30px;">Spring 5.x 总体架构</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在上面的文章里，已经花费了大笔墨来描述 Spring 的总体架构和各个组件的依赖关系，但还是认为这远远不够，重要的事情要说三遍。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这就是 Spring5.x 的总体架构：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde8020001932410600687.png" data-original="//img1.sycdn.imooc.com/5ecde8020001932410600687.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="核心架构（core）">核心架构（Core）</h3>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>IoC Container：</strong> 包括 BeanFactory，ApplicationContext 容器</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Events：</strong> 事件</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Resources：</strong> 资源使用</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>i18n：</strong> 国际化</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Validation：</strong> 数据校验</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Data Binding：</strong> 数据绑定</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Type Conversion：</strong> 类型转换</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>SpEL：</strong> 表达式计算</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>AOP：</strong> 面向切面编程</li>
+</ul>
+</div><div class="cl-preview-section"><h3 id="数据访问（data-access）">数据访问（Data Access）</h3>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Transactions：</strong> 事务管理</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>DAO Support：</strong> 数据访问对象</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>JDBC：</strong> jdbcTemplate 数据库访问模板</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>O/R Mapping：</strong> jpa，Hibernate，对象关系映射</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>XML Marshalling：</strong> xml 读取</li>
+</ul>
+</div><div class="cl-preview-section"><h3 id="web-应用（web-framework）">Web 应用（Web Framework）</h3>
+</div><div class="cl-preview-section"><h4 id="阻塞式-web-应用" style="font-size: 26px;">阻塞式 Web 应用</h4>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring MVC：</strong> 传统 Servlet，阻塞式响应；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>WebSocket：</strong> WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>SockJS：</strong> SockJS 是一个浏览器上运行的 JavaScript 库，如果浏览器不支持 WebSocket，该库可以模拟对 WebSocket 的支持，实现浏览器和 Web 服务器之间低延迟、全双工、跨域的通讯通道；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>STOMP Messaging：</strong> 专为消息中间件设计。</li>
+</ul>
+</div><div class="cl-preview-section"><h4 id="非阻塞式-web-应用" style="font-size: 26px;">非阻塞式 Web 应用</h4>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring WebFlux：</strong> Spring WebFlux 是一套全新的 Reactive Web 栈技术，实现完全非阻塞，支持 Reactive Streams 背压等特性，并且运行环境不限于 Servlet 容器（Tomcat、Jetty、Undertow），如 Netty 等；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>WebClient：</strong> WebClient 是从 Spring WebFlux 5.0 版本开始提供的一个非阻塞的基于响应式编程的进行 Http 请求的客户端工具。它的响应式编程的基于 Reactor 的；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>WebSocket：</strong> 所谓 WebSocket， 类似于 Socket，它的作用是可以让 Web 应用中的客户端和服务端建立全双工通信。</li>
+</ul>
+</div><div class="cl-preview-section"><h3 id="测试框架（test）">测试框架（Test）</h3>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Mock Objects：</strong> 单元测试</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>TestContext Framework：</strong> 上下文集成测试</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring MVC Test：</strong> Spring MVC集成测试</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>WebTestClient：</strong> Spring WebFlux 集成测试</li>
+</ul>
+</div><div class="cl-preview-section"><h3 id="spring-和其它的集成（integration）">Spring 和其它的集成（integration）</h3>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Remoting：</strong> 远程调用</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>JMS：</strong> 消息</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>JCA：</strong> 认证</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>JMX：</strong> 监控</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Email：</strong> 邮件</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Tasks：</strong> 任务</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Scheduling：</strong> 调度</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Caching：</strong> 缓存</li>
+</ul>
+</div><div class="cl-preview-section"><h3 id="spring-支持的语言（language）">Spring 支持的语言（Language）</h3>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Kotlin：</strong> Google 力推的语言</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Groovy：</strong> 动态 JVM 上运行的语言</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Dynamic Languages：</strong> 其它动态语言</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="小结" style="font-size: 30px;">小结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">本文是进入 Spring 源码实战的序，理论为主，从 Spring5.x 产生的背景到 Spring5 的新特征，直至 Spring 本身的架构，重点是 Spirng 框架本身的构成及内部组件的应用场景，接下来篇章就需要小伙伴们动手的时候了！</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2015">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            04 用思维导图拆解Spring Framework框架，让您事半功倍！
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2019">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            06 Spring 5.x源代码编译并导入到eclipse或者ide
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img3.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

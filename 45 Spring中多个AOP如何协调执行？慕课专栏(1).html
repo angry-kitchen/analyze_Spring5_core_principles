@@ -1,0 +1,477 @@
+<html><head><meta charset="utf-8"><title>45 Spring中多个AOP如何协调执行？-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        45 Spring中多个AOP如何协调执行？
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-09-02 10:26:09
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img3.sycdn.imooc.com/5ed0c2a900014b5406400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">理想必须要人们去实现它，它不但需要决心和勇敢而且需要知识。——吴玉章<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过前面的章节，我们知道在程序开发中 AOP 主要用来解决一些系统层面上的问题，Struts2 的拦截器设计就是基于 AOP 的思想，是个比较经典的例子。总结一下 AOP 通用的使用场景主要有以下几方面：</p>
+</div><div class="cl-preview-section"><pre><code>Authentication 权限
+Caching 缓存
+Context passing 内容传递
+Error handling 错误处理
+Lazy loading　懒加载
+Debugging　　调试
+logging, tracing, profiling and monitoring　记录跟踪　优化　校准
+Performance optimization　性能优化
+Persistence　　持久化
+Resource pooling　资源池
+Synchronization　同步
+Transactions 事务
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在实际的环境中，AOP 被广泛使用，故可能存在同一个切入点（joint point）有多个 aspect 的情况，此时如果不协调他们的执行顺序，执行结果就是不可控的，那么如何协调这个 aspect 按照你设定的顺序执行呢？</p>
+</div><div class="cl-preview-section"><h2 id="aspect-排序示例" style="font-size: 30px;">Aspect 排序示例</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 不支持 Advice 层级的排序，只支持 Aspect 层级的排序。不同的 Aspect 通过实现 Ordered 接口，或使用 @Order 注解设置优先级。对于 getOrder 返回的值或 @Order 中设置的值，<strong>值越小优先级越高</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>方式一：aspect 实现 Ordered 接口</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">目标类：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloService</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>String world<span class="token punctuation">)</span> <span class="token punctuation">{</span>		
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello "</span><span class="token operator">+</span> world<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">切面类：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">针对 sayHello 方法做前置处理的 Aspect1，其 order 为 5：</p>
+</div><div class="cl-preview-section"><pre class=" language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Aspect<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Before<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>Ordered<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Aspect</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogAspect</span> <span class="token keyword">implements</span> <span class="token class-name">Ordered</span><span class="token punctuation">{</span>
+
+	<span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"execution(* sayHello(..))"</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">beforeHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"how are you !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token annotation punctuation">@Override</span>
+	<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">5</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">重写了getOrder()方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">针对sayHello方法做前置处理的Aspect1,其order为5：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Aspect<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Before<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>Ordered<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Aspect</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogAspect2</span> <span class="token keyword">implements</span> <span class="token class-name">Ordered</span><span class="token punctuation">{</span>
+	<span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"execution(* sayHello(..))"</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">beforeHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"how do you do !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token annotation punctuation">@Override</span>
+	<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">测试类：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 AspectJProxyFactory 硬编码来生成代理类进行测试:</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>aop<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>AspectJProxyFactory<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AspectTest</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		HelloService target<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">HelloService</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		AspectJProxyFactory factory<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">AspectJProxyFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		factory<span class="token punctuation">.</span><span class="token function">setTarget</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		factory<span class="token punctuation">.</span><span class="token function">addAspect</span><span class="token punctuation">(</span>LogAspect<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		factory<span class="token punctuation">.</span><span class="token function">addAspect</span><span class="token punctuation">(</span>LogAspect2<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		HelloService proxy<span class="token operator">=</span>factory<span class="token punctuation">.</span><span class="token function">getProxy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		proxy<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token string">"world !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">//ApplicationContext context= new ClassPathXmlApplicationContext("com/davidwang456/test/spring.xml");</span>
+		<span class="token comment">//HelloService hello=context.getBean(HelloService.class);</span>
+		<span class="token comment">//hello.sayHello("world !");</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">运行结果：</p>
+</div><div class="cl-preview-section"><pre class="  language-tex"><code class="prism  language-tex">how are you!
+
+how do you do!
+
+hello world !
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">也可以使用 xml 配置的方式，如注释的代码。<br>
+xml 配置文件如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.springframework.org/schema/beans<span class="token punctuation">"</span></span>
+	<span class="token attr-name"><span class="token namespace">xmlns:</span>xsi</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="token punctuation">"</span></span>
+	<span class="token attr-name"><span class="token namespace">xmlns:</span>aop</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.springframework.org/schema/aop<span class="token punctuation">"</span></span>
+	<span class="token attr-name"><span class="token namespace">xsi:</span>schemaLocation</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd <span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">aop:</span>aspectj-autoproxy</span> <span class="token punctuation">/&gt;</span></span>
+	
+	<span class="token comment">&lt;!-- Target --&gt;</span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hello<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.davidwang456.test.HelloService<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+
+	<span class="token comment">&lt;!-- Aspect --&gt;</span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>logAspect<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.davidwang456.test.LogAspect<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+	
+	<span class="token comment">&lt;!-- Aspect --&gt;</span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>logAspect2<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.davidwang456.test.LogAspect2<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;aop:aspectj-autoproxy /&gt;</code>开启 AspectJ 主动代理。执行结果如硬编码一致。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">改变一下第一个切面 LogAspect 的顺序，order 变为 15：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Aspect<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Before<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>Ordered<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Aspect</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogAspect</span> <span class="token keyword">implements</span> <span class="token class-name">Ordered</span><span class="token punctuation">{</span>
+	<span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"execution(* sayHello(..))"</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">beforeHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"how are you !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token annotation punctuation">@Override</span>
+	<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">15</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">再次运行测试程序：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>ApplicationContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>support<span class="token punctuation">.</span>ClassPathXmlApplicationContext<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AspectTest</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">//HelloService target=new HelloService();</span>
+		<span class="token comment">//AspectJProxyFactory factory=new AspectJProxyFactory();</span>
+		<span class="token comment">//factory.setTarget(target);</span>
+		<span class="token comment">//factory.addAspect(LogAspect.class);</span>
+		<span class="token comment">//factory.addAspect(LogAspect2.class);</span>
+		<span class="token comment">//HelloService proxy=factory.getProxy();</span>
+		<span class="token comment">//proxy.sayHello("world !");</span>
+		ApplicationContext context<span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassPathXmlApplicationContext</span><span class="token punctuation">(</span><span class="token string">"com/davidwang456/test/spring.xml"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		HelloService hello<span class="token operator">=</span>context<span class="token punctuation">.</span><span class="token function">getBean</span><span class="token punctuation">(</span>HelloService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		hello<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token string">"world !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">控制台打印出结果如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-tex"><code class="prism  language-tex">how do you do !
+how are you !
+hello world !
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">正如我们预测的一样，改变了 order 的顺序，切面的执行顺序也发生了改变。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>方式二：aspect 使用 @Order 注解</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">改造切面类，使用注解的方式，不用实现 Ordered 了。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">日志切面1：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Aspect<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Before<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Order<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Aspect</span>
+<span class="token annotation punctuation">@Order</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogAspect</span><span class="token punctuation">{</span>
+	<span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"execution(* sayHello(..))"</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">beforeHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"how are you !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">级别为 5。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">日志切面 2，日志级别为 10：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Aspect<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Before<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Order<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Aspect</span>
+<span class="token annotation punctuation">@Order</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogAspect2</span><span class="token punctuation">{</span>
+	<span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"execution(* sayHello(..))"</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">beforeHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"how do you do !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">运行上面的测试程序，控制台打印结果如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-tex"><code class="prism  language-tex">how are you !
+how do you do !
+hello world !
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="aspect-排序原理" style="font-size: 30px;">Aspect 排序原理</h2>
+</div><div class="cl-preview-section"><h3 id="aspectjproxyfactory-硬编码方式">AspectJProxyFactory 硬编码方式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">测试程序中 AspectJProxyFactory 增加切面类，其 debug 内部如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">	<span class="token comment">/**
+	 * Add an aspect of the supplied type to the end of the advice chain.
+	 * @param aspectClass the AspectJ aspect class
+	 */</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addAspect</span><span class="token punctuation">(</span>Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> aspectClass<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		String aspectName <span class="token operator">=</span> aspectClass<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		AspectMetadata am <span class="token operator">=</span> <span class="token function">createAspectMetadata</span><span class="token punctuation">(</span>aspectClass<span class="token punctuation">,</span> aspectName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		MetadataAwareAspectInstanceFactory instanceFactory <span class="token operator">=</span> <span class="token function">createAspectInstanceFactory</span><span class="token punctuation">(</span>am<span class="token punctuation">,</span> aspectClass<span class="token punctuation">,</span> aspectName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">addAdvisorsFromAspectInstanceFactory</span><span class="token punctuation">(</span>instanceFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+
+	<span class="token comment">/**
+	 * Add all {@link Advisor Advisors} from the supplied {@link MetadataAwareAspectInstanceFactory}
+	 * to the current chain. Exposes any special purpose {@link Advisor Advisors} if needed.
+	 * @see AspectJProxyUtils#makeAdvisorChainAspectJCapableIfNecessary(List)
+	 */</span>
+	<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">addAdvisorsFromAspectInstanceFactory</span><span class="token punctuation">(</span>MetadataAwareAspectInstanceFactory instanceFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		List<span class="token operator">&lt;</span>Advisor<span class="token operator">&gt;</span> advisors <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>aspectFactory<span class="token punctuation">.</span><span class="token function">getAdvisors</span><span class="token punctuation">(</span>instanceFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> targetClass <span class="token operator">=</span> <span class="token function">getTargetClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		Assert<span class="token punctuation">.</span><span class="token function">state</span><span class="token punctuation">(</span>targetClass <span class="token operator">!=</span> null<span class="token punctuation">,</span> <span class="token string">"Unresolvable target class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		advisors <span class="token operator">=</span> AopUtils<span class="token punctuation">.</span><span class="token function">findAdvisorsThatCanApply</span><span class="token punctuation">(</span>advisors<span class="token punctuation">,</span> targetClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		AspectJProxyUtils<span class="token punctuation">.</span><span class="token function">makeAdvisorChainAspectJCapableIfNecessary</span><span class="token punctuation">(</span>advisors<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		AnnotationAwareOrderComparator<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>advisors<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">addAdvisors</span><span class="token punctuation">(</span>advisors<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，<code>AnnotationAwareOrderComparator.sort(advisors);</code>会将生成的 Advisor 进行排序。使用的排序器为 AnnotationAwareOrderComparator，它会读取 order 的级别进行排序。</p>
+</div><div class="cl-preview-section"><h3 id="xml配置方式">xml配置方式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过以前的章节，我们知道不管使用何种动态代理方式，代理的生成实现在 DefaultAopProxyFactory 中，那么在此类中打印出调用链路，可以找出脉络。DefaultAopProxyFactory.java</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">	<span class="token annotation punctuation">@Override</span>
+	<span class="token keyword">public</span> AopProxy <span class="token function">createAopProxy</span><span class="token punctuation">(</span>AdvisedSupport config<span class="token punctuation">)</span> <span class="token keyword">throws</span> AopConfigException <span class="token punctuation">{</span>
+        <span class="token comment">//打印调用链路</span>
+		StackUtils<span class="token punctuation">.</span><span class="token function">getStack</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>config<span class="token punctuation">.</span><span class="token function">isOptimize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> config<span class="token punctuation">.</span><span class="token function">isProxyTargetClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token function">hasNoUserSuppliedProxyInterfaces</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> targetClass <span class="token operator">=</span> config<span class="token punctuation">.</span><span class="token function">getTargetClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">if</span> <span class="token punctuation">(</span>targetClass <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">AopConfigException</span><span class="token punctuation">(</span><span class="token string">"TargetSource cannot determine target class: "</span> <span class="token operator">+</span>
+						<span class="token string">"Either an interface or a target is required for proxy creation."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			<span class="token keyword">if</span> <span class="token punctuation">(</span>targetClass<span class="token punctuation">.</span><span class="token function">isInterface</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> Proxy<span class="token punctuation">.</span><span class="token function">isProxyClass</span><span class="token punctuation">(</span>targetClass<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">JdkDynamicAopProxy</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ObjenesisCglibAopProxy</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">JdkDynamicAopProxy</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">打印调用链路的程序如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>davidwang456<span class="token punctuation">.</span>test<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StackUtils</span> <span class="token punctuation">{</span>	
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">getStack</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		   java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Map<span class="token operator">&lt;</span>Thread<span class="token punctuation">,</span> StackTraceElement<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">&gt;</span> ts <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">getAllStackTraces</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		    StackTraceElement<span class="token punctuation">[</span><span class="token punctuation">]</span> ste <span class="token operator">=</span> ts<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		    <span class="token keyword">int</span> cnt<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+		    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span>ste<span class="token punctuation">.</span>length<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>i<span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		    	StackTraceElement s<span class="token operator">=</span>ste<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		    	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"调用序号："</span><span class="token operator">+</span>cnt<span class="token operator">+</span><span class="token string">"  调用类和方法 "</span><span class="token operator">+</span>s<span class="token punctuation">.</span><span class="token function">getClassName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"$"</span><span class="token operator">+</span>s<span class="token punctuation">.</span><span class="token function">getMethodName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		    	cnt<span class="token operator">++</span><span class="token punctuation">;</span>		   
+		    <span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">运行测试程序，打印出调用链路：</p>
+</div><div class="cl-preview-section"><pre class=" language-tex"><code class="prism  language-tex">调用序号：1  调用类和方法 com.davidwang456.test.AspectTest$main
+调用序号：2  调用类和方法 org.springframework.context.support.ClassPathXmlApplicationContext$&lt;init&gt;
+调用序号：3  调用类和方法 org.springframework.context.support.ClassPathXmlApplicationContext$&lt;init&gt;
+调用序号：4  调用类和方法 org.springframework.context.support.AbstractApplicationContext$refresh
+调用序号：5  调用类和方法 org.springframework.context.support.AbstractApplicationContext$finishBeanFactoryInitialization
+调用序号：6  调用类和方法 org.springframework.beans.factory.support.DefaultListableBeanFactory$preInstantiateSingletons
+调用序号：7  调用类和方法 org.springframework.beans.factory.support.AbstractBeanFactory$getBean
+调用序号：8  调用类和方法 org.springframework.beans.factory.support.AbstractBeanFactory$doGetBean
+调用序号：9  调用类和方法 org.springframework.beans.factory.support.DefaultSingletonBeanRegistry$getSingleton
+调用序号：10  调用类和方法 org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$9/2036368507$getObject
+调用序号：11  调用类和方法 org.springframework.beans.factory.support.AbstractBeanFactory$lambda$0
+调用序号：12  调用类和方法 org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$createBean
+调用序号：13  调用类和方法 org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$doCreateBean
+调用序号：14  调用类和方法 org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$initializeBean
+调用序号：15  调用类和方法 org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$applyBeanPostProcessorsAfterInitialization
+调用序号：16  调用类和方法 org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator$postProcessAfterInitialization
+调用序号：17  调用类和方法 org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator$wrapIfNecessary
+调用序号：18  调用类和方法 org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator$createProxy
+调用序号：19  调用类和方法 org.springframework.aop.framework.ProxyFactory$getProxy
+调用序号：20  调用类和方法 org.springframework.aop.framework.ProxyCreatorSupport$createAopProxy
+调用序号：21  调用类和方法 org.springframework.aop.framework.DefaultAopProxyFactory$createAopProxy
+调用序号：22  调用类和方法 com.davidwang456.test.StackUtils$getStack
+调用序号：23  调用类和方法 java.lang.Thread$getAllStackTraces
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，调用序号 18 调用类 AbstractAutoProxyCreator 的 getAdvicesAndAdvisorsForBean() 方法调用了其父类：AbstractAdvisorAutoProxyCreator 的 getAdvicesAndAdvisorsForBean 方法，它内部调用 AnnotationAwareOrderComparator 的 sort 方法对生成的 Advisor 进行排序。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">	<span class="token comment">/**
+	 * Sort advisors based on ordering. Subclasses may choose to override this
+	 * method to customize the sorting strategy.
+	 * @param advisors the source List of Advisors
+	 * @return the sorted List of Advisors
+	 * @see org.springframework.core.Ordered
+	 * @see org.springframework.core.annotation.Order
+	 * @see org.springframework.core.annotation.AnnotationAwareOrderComparator
+	 */</span>
+	<span class="token keyword">protected</span> List<span class="token operator">&lt;</span>Advisor<span class="token operator">&gt;</span> <span class="token function">sortAdvisors</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Advisor<span class="token operator">&gt;</span> advisors<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		AnnotationAwareOrderComparator<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>advisors<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> advisors<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可见，AnnotationAwareOrderComparator 实现了 OrderComparator 完成 Advisor 的排序。支持接口继承或者注解方式。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过 Aspect 直接的协调，我们又学习了排序实现的方式：<strong>实现 Ordered 接口或者使用 @Order 注解</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可用于定义的 Aspect 的执行指定执行顺序，值越小，越先执行。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 利用 @Order 控制配置类的加载顺序。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 在加载 Bean 的时候，有用到 order 注解。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2058">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            44 Spring控制器Controller如何设置AOP？
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2060">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            46 Spring AOP 总结及面试热点题目集萃
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img2.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

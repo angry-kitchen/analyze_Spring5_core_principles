@@ -1,0 +1,264 @@
+<html><head><meta charset="utf-8"><title>39 图说AOP---妈妈再也不担心我概念混淆了-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        39 图说AOP---妈妈再也不担心我概念混淆了
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-20 09:27:06
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img3.sycdn.imooc.com/5ed0c17800013f3a06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">耐心是一切聪明才智的基础。——柏拉图<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">假设我们想将多个木板组装一个家具，我们该怎么做呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单一点，用锤子将钉钉起来。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a49f8000149dd05000375.jpg" data-original="//img1.sycdn.imooc.com/5f3a49f8000149dd05000375.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这种属于比较简单暴力的方式，容易将木板弄坏。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">另外一种方式则比较常用，通过在木板特定的位置打孔，</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a060001170602380161.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a060001170602380161.jpg" alt="图片描述"><br>
+然后通过螺栓固定在一起，组装成一个有用的家具。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a1a0001983509780276.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a1a0001983509780276.jpg" alt="图片描述"><br>
+AOP 的方式类似与家具的组装。</p>
+</div><div class="cl-preview-section"><h2 id="图说aop概念" style="font-size: 30px;">图说AOP概念</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">AOP（Aspect-Oriented Programming），即面向切面编程，它与 OOP（Object-Oriented Programming，面向对象编程）相辅相成，提供了与 OOP 不同的抽象软件结构的视角。在 OOP 中，我们以类（class）作为我们的基本单元，而 AOP 中的基本单元是 Aspect（切面）。SpringAOP的在实际应用中场景有哪些？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a2700019e1904740288.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a2700019e1904740288.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">Authentication 认证：检测用户是否登录，未登录则返回登录页面。</li>
+<li style="font-size: 20px; line-height: 38px;">Caching 缓存：</li>
+<li style="font-size: 20px; line-height: 38px;">Context passing 上下文传递</li>
+<li style="font-size: 20px; line-height: 38px;">Error handling 错误处理如SpringMVC 中@<em>ControllerAdvice</em> 注解。</li>
+<li style="font-size: 20px; line-height: 38px;">Lazy loading延迟加载</li>
+<li style="font-size: 20px; line-height: 38px;">Debugging 调试</li>
+<li style="font-size: 20px; line-height: 38px;">logging，tracing，profiling and monitoring 记录跟踪 优化 校准</li>
+<li style="font-size: 20px; line-height: 38px;">Performance optimization 性能优化</li>
+<li style="font-size: 20px; line-height: 38px;">Persistence 持久化</li>
+<li style="font-size: 20px; line-height: 38px;">Resource pooling 资源池</li>
+<li style="font-size: 20px; line-height: 38px;">Synchronization 同步</li>
+<li style="font-size: 20px; line-height: 38px;">Transactions 事务</li>
+<li style="font-size: 20px; line-height: 38px;">Logging 日志</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">AOP 给人难以理解的一个关键点是它的概念比较多, 而且坑爹的是, 这些概念经过了中文翻译后, 变得面目全非, 相同的一个术语, 在不同的翻译下, 含义总有着各种莫名其妙的差别. 鉴于此，我们直接拿官方的说明来看。</p>
+</div><div class="cl-preview-section"><h3 id="概述">概述</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下图是从Spring AOP 源码上摘取的 aop 的组件：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4ad20001335812990691.png" data-original="//img1.sycdn.imooc.com/5f3a4ad20001335812990691.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="切面aspect">切面Aspect</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">A modularization of a concern that cuts across multiple classe</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">切面是一个横切关注点的模块化，一个切面能够包含同一个类型的不同增强方法，比如说事务处理和日志处理可以理解为两个切面。<br>
+Aspect 由 Advice 和 PointCut 组成，它既包含了横切逻辑的定义，也包括了切入点的定义。<br>
+Spring AOP就是负责实施切面的框架，它将切面所定义的横切逻辑织入到切面所指定的连接点中。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通俗的说，Aspect相当于一个螺栓，它可以穿过多块木板。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a400001b85f03910091.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a400001b85f03910091.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="join-point连接点">Join point(连接点)</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">A point during the execution of a program, such as the execution of a method or the handling of an exception. In Spring AOP, a join point always represents a method execution.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">程序执行过程中明确的点，如方法的调用或特定的异常被抛出。连接点由两个信息确定：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">方法(表示程序执行点，即在哪个目标方法)</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">相对点(表示方位，即目标方法的什么位置，比如调用前，后等)</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a5900014b7203950093.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a5900014b7203950093.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通俗的说，joint point就是木板中的孔。</p>
+</div><div class="cl-preview-section"><h3 id="pointcut切点">PointCut(切点)</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">A predicate that matches join points.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">切入点是对连接点进行拦截的条件定义。它和连接点匹配。示例：</p>
+</div><div class="cl-preview-section"><blockquote>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">//表示匹配所有方法  </span>
+<span class="token number">1</span>）<span class="token function">execution</span><span class="token punctuation">(</span><span class="token operator">*</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
+<span class="token comment">//表示匹配com.savage.server.UserService中所有的公有方法</span>
+<span class="token number">2</span>）<span class="token function">execution</span><span class="token punctuation">(</span><span class="token keyword">public</span> <span class="token operator">*</span> com<span class="token punctuation">.</span> savage<span class="token punctuation">.</span>service<span class="token punctuation">.</span>UserService<span class="token punctuation">.</span>*<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
+<span class="token comment">//表示匹配com.savage.server包及其子包下的所有方法 </span>
+<span class="token number">3</span>）<span class="token function">execution</span><span class="token punctuation">(</span><span class="token operator">*</span> com<span class="token punctuation">.</span>savage<span class="token punctuation">.</span>server<span class="token punctuation">.</span><span class="token punctuation">.</span>*<span class="token punctuation">.</span>*<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
+</code></pre>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通俗的说，就是下图的螺栓部件。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a66000118ba02520254.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a66000118ba02520254.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="advice增强">Advice(增强)</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Action taken by an aspect at a particular join point.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Advice是指拦截到连接点之后要执行的代码，包括了“around”、“before”和“after”等不同类型的通知。Spring AOP框架以拦截器来实现通知模型，并维护一个以连接点为中心的拦截器链。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a740001e5fa02520254.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a740001e5fa02520254.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通俗的说，Advice就是螺栓的头，决定了pointcut的位置。around 相当于螺栓的两个头(不一定贴切)。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 包括以下类型的通知：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a850001f70708220328.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a850001f70708220328.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">Before advice：在连接点之前运行的通知，但是不能阻止执行流继续到连接点(除非抛出异常)。</li>
+<li style="font-size: 20px; line-height: 38px;">After returning advice：在连接点正常完成后运行的通知(例如，如果一个方法没有抛出异常返回)。</li>
+<li style="font-size: 20px; line-height: 38px;">After throwing advice：如果方法通过抛出异常退出，则执行通知。</li>
+<li style="font-size: 20px; line-height: 38px;">After (finally) advice：不管连接点以何种方式退出(正常或异常返回)，都要执行的通知</li>
+<li style="font-size: 20px; line-height: 38px;">Around advice：围绕连接点(如方法调用)的通知。这是最有力的建议。Around通知可以在方法调用前后执行自定义行为。它还负责选择是继续到连接点，还是通过返回它自己的返回值或抛出异常来简化建议的方法执行</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="target-object目标对象">Target object(目标对象)</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">An object being advised by one or more aspects.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">目标对象指将要被增强的对象，即包含主业务逻辑的类对象。或者说是被一个或者多个切面所通知的对象。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通俗的讲就是我们下图的木板。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a9300010c9203930099.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a9300010c9203930099.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="weaving织入">Weaving(织入)</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">linking aspects with other application types or objects to create an advised object。</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">织入是将切面和业务逻辑对象连接起来, 并创建通知代理的过程。织入可以在编译时，类加载时和运行时完成。在编译时进行织入就是静态代理，而在运行时进行织入则是动态代理。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f3a4a9e000187b502690198.jpg" data-original="//img1.sycdn.imooc.com/5f3a4a9e000187b502690198.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="introduction">Introduction</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Declaring additional methods or fields on behalf of a type.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">静态代理，其它为动态代理。</p>
+</div><div class="cl-preview-section"><h3 id="aop-proxy">AOP proxy</h3>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">An object created by the AOP framework in order to implement the aspect contracts (advise method executions and so on).</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 默认使用标准的 JDK 动态代理（Dynamic Proxy）技术来实现 AOP 代理，通过它，我们可以为任意的接口实现代理。如果需要为一个类实现代理，那么可以使用 CGLIB 代理。当一个业务逻辑对象没有实现接口时，那么Spring AOP 就默认使用 CGLIB 来作为 AOP 代理了。即如果我们需要为一个方法织入 advice，但是这个方法不是一个接口所提供的方法，则此时 Spring AOP 会使用 CGLIB 来实现动态代理。鉴于此，Spring AOP 建议基于接口编程，对接口进行 AOP 而不是类。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 是在纯 Java 中实现的。不需要特殊的编译过程。Spring AOP 不需要控制类装入器层次结构，因此适合在 Servlet 容器或应用服务器中使用。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 目前只支持方法执行连接点（建议在Spring Bean上执行方法）。虽然可以在不破坏核心 Spring AOP API 的情况下添加对字段拦截的支持，但是没有实现字段拦截。如果需要通知字段访问和更新连接点，请考虑AspectJ 之类的语言。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 的 AOP 方法与大多数其他 AOP 框架不同。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其目的不是提供最完整的 AOP 实现（尽管Spring AOP非常强大）。相反，其目标是提供 AOP 实现和 Spring IoC 之间的紧密集成，以帮助解决企业应用程序中的常见问题。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">因此，例如，Spring 框架的 AOP 功能通常与 Spring IoC 容器一起使用。Aspects 是通过使用普通的 bean 定义语法来配置的（尽管这允许强大的“自动代理”功能）。这是与其他 AOP 实现的一个重要区别。使用 Spring AOP 不能轻松或有效地完成某些事情，比如通知非常细粒度的对象(通常是域对象)。在这种情况下，AspectJ 是最佳选择。然而，我们的经验是，Spring AOP 为企业 Java 应用程序中大多数适合 AOP 的问题提供了一个优秀的解决方案。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring AOP 从未试图与 AspectJ 竞争来提供全面的 AOP 解决方案。我们认为基于代理的框架（如Spring AOP）和成熟的框架（如AspectJ）都是有价值的，它们是互补的，而不是竞争的。Spring 将 Spring AOP 和 IoC 与 AspectJ 无缝集成，从而在一致的基于 Spring 的应用程序体系结构中支持 AOP 的所有使用。这种集成并不影响Spring AOP AP I或 AOP Alliance API。Spring AOP 保持向后兼容。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2052">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            38 SpEL总结及常见面试题解析
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2054">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            40 Spring AOP策略模式使用及示例实战
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img2.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

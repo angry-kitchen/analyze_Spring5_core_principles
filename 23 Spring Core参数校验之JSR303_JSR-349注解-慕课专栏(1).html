@@ -1,0 +1,197 @@
+<html><head><meta charset="utf-8"><title>23 Spring Core参数校验之JSR-303_JSR-349注解-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        23 Spring Core参数校验之JSR-303_JSR-349注解
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-06 13:40:13
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5ecf15b100014f5006400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">学习知识要善于思考，思考，再思考。 —— 爱因斯<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;"><strong>背景</strong></h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">参数校验是我们程序开发中必不可少的过程。用户在前端要校验参数的合法性，当数据到了后端，为了防止恶意操作，保持程序的健壮性，后端同样需要对数据进行校验。当我们多个地方需要校验时，我们就需要在每一个地方调用校验程序,导致代码很冗余，且不美观。那么如何优雅的对参数进行校验呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>实现 Validator 接口</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Validator 接口校验是 Spring 的校验机制。可以用它来验证自己定义的实体对象。注意：这个接口是上下文无关的，也就是说不仅可以在 Web 层验证对象，也可以在 DAO 层，或者其它任意层。（参照上篇）</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>JSR 349/303/380 注解方式</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean Validation 为 JavaBean 验证定义了相应的元数据模型和 API。缺省的元数据是 Java Annotations，通过使用 XML 可以对原有的元数据信息进行覆盖和扩展。在应用程序中，通过使用 Bean Validation 或是你自己定义的 constraint，例如 <code>@NotNull</code>, <code>@Max</code>, <code>@ZipCode</code>， 就可以确保数据模型（JavaBean）的正确性。constraint 可以附加到字段，getter 方法，类或者接口上面。对于一些特定的需求，用户可以很容易的开发定制化的 constraint。Bean Validation 是一个运行时的数据验证框架，在验证之后验证的错误信息会被马上返回。常见的注解有：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Null</strong>：被注释的元素必须为 null；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@NotNull</strong>：被注释的元素必须不为 null；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@AssertTrue</strong>：被注释的元素必须为 true；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@AssertFalse</strong>：被注释的元素必须为 false；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Min(value)</strong>：被注释的元素必须是一个数字，其值必须大于等于指定的最小值；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Max(value)</strong>：被注释的元素必须是一个数字，其值必须小于等于指定的最大值；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@DecimalMin(value)</strong>：被注释的元素必须是一个数字，其值必须大于等于指定的最小值；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@DecimalMax(value)</strong>：被注释的元素必须是一个数字，其值必须小于等于指定的最大值；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Size(max, min)</strong>：被注释的元素的大小必须在指定的范围内；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Digits (integer, fraction)</strong>：被注释的元素必须是一个数字，其值必须在可接受的范围内；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Past</strong>：被注释的元素必须是一个过去的日期；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Future</strong>：被注释的元素必须是一个将来的日期；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Pattern(value)</strong>：被注释的元素必须符合指定的正则表达式。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>JSR 349/303/380 参数校验实例</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">本次我们以实现 JSR 349/303/380 注解方式为例进行验证，并了解其背后的原理。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">要验证的 Java Bean，加上验证注解：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee975710001fa7305000283.png" data-original="//img1.sycdn.imooc.com/5ee975710001fa7305000283.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">要执行的验证逻辑：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee975ad000149d304830516.png" data-original="//img1.sycdn.imooc.com/5ee975ad000149d304830516.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 的 Validator 工厂：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意：ValidatorFactory 需要容器 javax.el 表达式的支持，如 Tomcat，Jetty，GlassFish 等,本文使用的是 Tomcat 的支持。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ee975cb0001266b06400399.png" data-original="//img1.sycdn.imooc.com/5ee975cb0001266b06400399.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">否则会报错：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">HV000183: Unable to load ‘javax.el.ExpressionFactory’. Check that you have the EL dependencies on the classpath, or use ParameterMessageInterpolator instead</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ee976380001186c06050520.png" data-original="//img1.sycdn.imooc.com/5ee976380001186c06050520.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">测试类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee9765600014d4d05800220.png" data-original="//img1.sycdn.imooc.com/5ee9765600014d4d05800220.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">执行结果：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">日期不能为空</p>
+<p style="font-size: 20px; line-height: 38px;">价格不能为空</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="工作原理" style="font-size: 30px;">工作原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">debug 源代码，可以看出整个的工作原理如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee9767d00016c5106400366.png" data-original="//img1.sycdn.imooc.com/5ee9767d00016c5106400366.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，比较重要的部分代码是调用不同的 Validator 实现类（Hibernate 自带的 Validator 实现类），ConstraintTree.java#validateSingleConstraint 见下图：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2b97b700011ebf09600420.jpg" data-original="//img1.sycdn.imooc.com/5f2b97b700011ebf09600420.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean Validation 为 JavaBean 验证定义了相应的元数据模型和 API，Bean Validation 是一个运行时的数据验证框架，在验证之后验证的错误信息会被马上返回。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Hibernate Validator 是 Bean Validation 的参考实现 。 Hibernate Validator 提供了 JSR 303 规范中所有内置 constraint 的实现，除此之外还有一些附加的 constraint。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Hibernate 内部将 Validator 组成 Tree 形结构，通过可到达树来遍历 Validator。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2036">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            22 Spring Core参数校验之validator
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2038">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            24 Spring Core vs Spring MVC参数校验
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img2.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

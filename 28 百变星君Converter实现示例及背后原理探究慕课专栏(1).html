@@ -1,0 +1,185 @@
+<html><head><meta charset="utf-8"><title>28 百变星君Converter实现示例及背后原理探究-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        28 百变星君Converter实现示例及背后原理探究
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-07-24 11:06:37
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ecf19a3000114df06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">耐心是一切聪明才智的基础。——柏拉图<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><center>
+	<img class="" src="https://img1.sycdn.imooc.com/5f0d15130001abf104000220.jpg" data-original="//img1.sycdn.imooc.com/5f0d15130001abf104000220.jpg">
+	图片来源网络
+</center>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">《百变星君》是由叶伟民导演，周星驰，梁咏琪，吴孟达等主演的奇幻科幻喜剧片，于 1995 年在香港上映。剧中周星驰科幻般的七十二变给观众留下了深刻的印象。在 Spring 的世界中，也有一位百变星君，它就是 Converter。</p>
+</div><div class="cl-preview-section"><h2 id="spring-中的百变星君" style="font-size: 30px;">Spring 中的百变星君</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">类型转换的应用场景一般在 Web 应用中，如 Spring MVC 的流程中：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d159d000109fe06400566.jpg" data-original="//img1.sycdn.imooc.com/5f0d159d000109fe06400566.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在前面的章节我们提到了数据绑定 DataBinder，它包括数据校验，数据格式转换等功能。其中，数据校验 Validator，属性编辑 PropertyEditor 都做了讲解，接下来我们开始看 ConversionService 和 Formatter。本节我们主要讲解 ConversionService，下节讨论 Formatter。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d15b40001ba8406400304.jpg" data-original="//img1.sycdn.imooc.com/5f0d15b40001ba8406400304.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ConversionService 被设计成无状态对象,在容器启动时被实例化,在多线程间进行共享（线程安全）。在 Spring 应用中，可以自定义类型转换器。当需要框架进行类型转换时，Spring 会选择合适的类型转换器使用。你也可以注入 ConversionService 到 beans 或者直接调用。但 ConversionService 是如何实现数据格式转换的呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ConversionService 的默认实现 DefaultConversionService 内部封装了各种 Converter 的实现，为什么不直接使用 Converter 呢？我们知道不是线程安全的，而 ConversionService 是线程安全的。与 PropertyEditorSupport 不同的是，converter 可以将任意类型的输入转换为任意类型的输出。</p>
+</div><div class="cl-preview-section"><h2 id="探究原理" style="font-size: 30px;">探究原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们抛开复杂的应用，仅仅用最简单的例子来完成。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">示例程序：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/e2dbf1865107493b9f5a1a9ee43282c7" data-original="http://p9.pstatp.com/large/pgc-image/e2dbf1865107493b9f5a1a9ee43282c7" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">打印出 DefaultConversionService 的内容，它包含了很多类型的 Converter 实现：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">ConversionService converters =</p>
+<p style="font-size: 20px; line-height: 38px;">java.lang.Boolean -&gt; java.lang.String : org.springframework.core.convert.support.ObjectToStringConverter@31221be2</p>
+<p style="font-size: 20px; line-height: 38px;">java.lang.Character -&gt; java.lang.Number : org.springframework.core.convert.support.CharacterToNumberFactory@2e5d6d97</p>
+<p style="font-size: 20px; line-height: 38px;">……</p>
+<p style="font-size: 20px; line-height: 38px;">……</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从上面可以看出 ConversionService 封装了各种 Converter 和 ConvertFactory。</p>
+</div><div class="cl-preview-section"><h2 id="深入原理" style="font-size: 30px;">深入原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们来 debug 进去看看：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p3.pstatp.com/large/pgc-image/67771afc3e6c4585a0259d419fcf08ce" data-original="http://p3.pstatp.com/large/pgc-image/67771afc3e6c4585a0259d419fcf08ce" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>重点 1：GenericConversionService.java#convert 方法</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/d13bec63aefb4f74b1f2972b9e33f192" data-original="http://p9.pstatp.com/large/pgc-image/d13bec63aefb4f74b1f2972b9e33f192" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">该方法根据输入数据的类型和输出数据的类型从注册的 Converter 中查找最符合条件的转换器。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>重点 2：StringToCollectionConverter.java#convert 方法</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/e6f89612b1824739ad72abb9f3aac232" data-original="http://p1.pstatp.com/large/pgc-image/e6f89612b1824739ad72abb9f3aac232" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上面出现的参数类型 TypeDescriptor 是对于一种类型的封装，里面包含该种类型的值、实际类型等等信息。此时实现真正的类型转换，支持单个的数据类型转换，也支持多个数据的类型转换。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Converter 不是线程安全的，ConversionService 被设计成无状态对象，在容器启动时被实例化，在多线程间进行共享（线程安全）。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/8f4de07e42c34f788854931509f5df9c" data-original="http://p9.pstatp.com/large/pgc-image/8f4de07e42c34f788854931509f5df9c" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ConversionService 封装了诸多 Converter、ConverterFactories、GenericConverter 和 ConditionalGnericConverter 的实现类，具有丰富的功能，不愧称之为 Spring 中的百变星君。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2041">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            27 Spring MVC数据绑定InitBinder揭秘
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2043">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            29 Spring MVC之类型转换Converter
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img1.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

@@ -1,0 +1,677 @@
+<html><head><meta charset="utf-8"><title>47 Spring总结及常见面试问题与答案集锦-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        47 Spring总结及常见面试问题与答案集锦
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-09-09 10:08:50
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5ed0c3160001cc0206400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">构成我们学习最大障碍的是已知的东西，而不是未知的东西。 —— 贝尔纳<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="spring-总结" style="font-size: 30px;">Spring 总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>Spring 5架构</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">提到Spring，大家的第一想法是IoC和AoP，确实，IoC和AoP很重要，但Spring是一个历经了近二十载风雨的框架，它不仅仅只有IoC和AoP，还包含了诸多内容：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f5839210001b05c06670433.png" data-original="//img1.sycdn.imooc.com/5f5839210001b05c06670433.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到 Spring 核心组件 core 位于所有组件的核心，它包含了 DI，事件，资源，国际化，验证，数据绑定，类型转换，SpEL，AOP 等主要功能，基于核心应用组件之上的组件有：数据访问（data access）、Web 框架、Spring 还支持动态脚本语言如 Groovy，也提供了 Kotlin 的支持、及其它各种框架及组件如调度，邮件，缓存，远程调用等的支持集成。最后，Spring 还提供了方便的测试支持 spring-test。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>Spring-core核心基础组件</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring5 基础组件包含六个，相应的关系如下图：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f5838e6000179b812360588.jpg" data-original="//img1.sycdn.imooc.com/5f5838e6000179b812360588.jpg" alt="图片描述"><br>
+从箭头的流向可以归纳出从底到上的分层结构：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">spring-jcl、spring-instrument、kotlin-coroutines 是底层基础，不依赖 Spring；</li>
+<li style="font-size: 20px; line-height: 38px;">其它组件，可以标记为 L1；</li>
+<li style="font-size: 20px; line-height: 38px;">spring-core 依赖于 spring-jcl、kotlin-coroutines 而又不依赖其它 Spring 组件，可以标记为 L2；</li>
+<li style="font-size: 20px; line-height: 38px;">spring-expression、spring-beans 依赖于 spring-jcl 和 spring-core 又不依赖其它 Spring 组件，可以标记为 L3；</li>
+<li style="font-size: 20px; line-height: 38px;">spring-aop 依赖于 spring-jcl、spring-core、spring-beans 而又不依赖其它 Spring 组件，可以标记为 L4；</li>
+<li style="font-size: 20px; line-height: 38px;">spring-context 依赖于 spring-jcl、spring-core、spring-expression、spring-beans、spring-aop，可标记为L5。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f5838fa0001eb4d05310588.jpg" data-original="//img1.sycdn.imooc.com/5f5838fa0001eb4d05310588.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-jcl：</strong> JCL 全称：Jakarta Commons Logging，Spring-jcl 采用了设计模式中的“适配器模式”，它对外提供统一的接口，然后在适配类中将对日志的操作委托给具体的日志框架；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-core：</strong> Core 模块主要的功能是实现了反向控制 IOC（Inversion of Control）与依赖注入DI（Dependency Injection）、Bean 配置以及加载。Core 模块中有 Beans、BeanFactory、BeanDefinitions、ApplicationContext 等几个重要概念；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-expression：</strong> Spring 表达式语言，解析 Spring 表达式语言；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-beans：</strong> 负责 Bean 工厂中 Bean 的装配，所谓 Bean 工厂即是创建对象的工厂，Bean 的装配也就是对象的创建工作。<strong>重点：BeanFactory</strong>；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-aop：</strong> Spring 提供了面向切面功能的模块；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-context：</strong> Spring 的 IOC 容器，因大量调用 Spring Core 中的函数，整合了 Spring 的大部分功能。 Bean 创建好对象后，由 Context 负责建立 Bean 与 Bean 之间的关系并维护。所以也可以把 Context 看成是 Bean 关系的集合，<strong>重点：ApplicationContext</strong>。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用的其它组件：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring-instrument：</strong> 相当于一个检测器，提供对 JVM 以及对 Tomcat 的检测；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>kotlin-coroutines：</strong> 引入了协程。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了方便查看，我们去掉了 Spring 核心组件的描述，仅仅描述核心组件之间的关系，如下图所示：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f5839100001170813090484.jpg" data-original="//img1.sycdn.imooc.com/5f5839100001170813090484.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="spring热点面试题目集萃" style="font-size: 30px;">Spring热点面试题目集萃</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我收集了一些 Spring 面试的问题，这些问题可能会在下一次技术面试中遇到。对于其他 Spring 模块，我将单独分享面试问题和答案。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果你能将在以前面试中碰到的，且你认为这些应该是一个有 Spring 经验的人可能被问到的问题发给我，我将不胜感激！</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我将把它们添加到这个列表中。这将对其他学习者也会有很大的帮助。</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">什么是 Spring 框架?它的主要模块有哪些?</li>
+<li style="font-size: 20px; line-height: 38px;">使用 Spring 框架的好处是什么?</li>
+<li style="font-size: 20px; line-height: 38px;">什么是控制反转（IoC）和依赖注入?</li>
+<li style="font-size: 20px; line-height: 38px;">在 Spring 框架中的 IoC 是怎么样子的 ?</li>
+<li style="font-size: 20px; line-height: 38px;">BeanFactory 和 ApplicationContext 之间的区别?</li>
+<li style="font-size: 20px; line-height: 38px;">将 Spring 配置到应用程序中的方式有哪些?</li>
+<li style="font-size: 20px; line-height: 38px;">基于XML 的 Spring 配置是什么样子的?</li>
+<li style="font-size: 20px; line-height: 38px;">基于 Spring Java 的配置是什么样子的?</li>
+<li style="font-size: 20px; line-height: 38px;">基于 Spring 注解的配置是什么样子的?</li>
+<li style="font-size: 20px; line-height: 38px;">请解释一下 Spring Bean 的生命周期?</li>
+<li style="font-size: 20px; line-height: 38px;">Spring Bean 作用域的有哪些?</li>
+<li style="font-size: 20px; line-height: 38px;">Spring 的内部 Bean 是什么?</li>
+<li style="font-size: 20px; line-height: 38px;">在 Spring 框架中，单例 Bean 线程安全吗?</li>
+<li style="font-size: 20px; line-height: 38px;">如何在 Spring 中注入 Java 集合?请给个例子好吗?</li>
+<li style="font-size: 20px; line-height: 38px;">如何将一个 java.util.* 属性注入到 Spring Bean?</li>
+<li style="font-size: 20px; line-height: 38px;">解释一下 Spring Bean 的自动注入式什么样的?</li>
+<li style="font-size: 20px; line-height: 38px;">请解释一下不同的 Bean 自动注入模式?</li>
+<li style="font-size: 20px; line-height: 38px;">怎么打开基于注释的自动注入的?</li>
+<li style="font-size: 20px; line-height: 38px;">能否用例子解释一下 @Required 注解吗?</li>
+<li style="font-size: 20px; line-height: 38px;">能否用例子解释一下 @Autowired 注解吗?</li>
+<li style="font-size: 20px; line-height: 38px;">能否用例子讲解一下 @Qualifier 注解吗?</li>
+<li style="font-size: 20px; line-height: 38px;">构造方法注入和 setter 注入之间的区别吗?</li>
+<li style="font-size: 20px; line-height: 38px;">Spring 框架的事件类型有哪些?</li>
+<li style="font-size: 20px; line-height: 38px;">FileSystemResource 和 ClassPathResource 之间的区别吗?</li>
+<li style="font-size: 20px; line-height: 38px;">列举一些 Spring 框架中使用的设计模式?</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="spring-框架是什么它的主要模块有哪些" style="font-size: 30px;">1. Spring 框架是什么?它的主要模块有哪些?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 框架是一个 Java 平台，提供全面的基础设施支持开发 Java 应用程序。Spring 处理基础设施部分，这样你就可以专注于应用程序部分。Spring 框架内，把一级对象通过设计模式封装起来，您可以放心的集成到您自己的应用程序而不用关注他们如何在后台工作。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">目前，Spring 框架由功能组织成大约 20 个模块。这些模块分为核心容器、数据访问/集成、Web、AOP（面向切面的编程）、Instrument（支持和类加载器的实现来在特定的应用服务器上使用）、消息和测试，如下列图所示。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/f83ce21720494a1ba0305d23ab46f59f" data-original="http://p1.pstatp.com/large/pgc-image/f83ce21720494a1ba0305d23ab46f59f" alt="img"></p>
+</div><div class="cl-preview-section"><h2 id="使用-spring-框架的好处是什么" style="font-size: 30px;">2. 使用 Spring 框架的好处是什么?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面是一些使用 Spring 框架的好处的列表：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">通过依赖注入（DI）方式，在构造方法或者 Java Bean 属性上，依赖关系是明确的和明显的；</li>
+<li style="font-size: 20px; line-height: 38px;">IoC 容器往往是轻量级的，特别是与 EJB 容器相比。这是有利于在有限的内存和 CPU 资源的计算机上开发和部署应用程序；</li>
+<li style="font-size: 20px; line-height: 38px;">Spring 不重新发明轮子，相反，它利用一些现有的技术如几个 ORM 框架，日志框架，JEE，quartz 和 JDK 计时器，其他视图技术等；</li>
+<li style="font-size: 20px; line-height: 38px;">Spring 是模块化的，尽管包和类很重要，你只关心你需要的模块，忽略其它模块；</li>
+<li style="font-size: 20px; line-height: 38px;">在 Spring 测试应用程序很简单，因为依赖环境的代码被移入到框架本身。此外，通过使用 JavaBean-style pojo 方式，使用依赖注入注入测试数据变得更容易；</li>
+<li style="font-size: 20px; line-height: 38px;">Spring 的 Web 框架是一个设计良好的 Web MVC 框架，它可以很好的替代其它 Web 框架如 Struts ；</li>
+<li style="font-size: 20px; line-height: 38px;">Spring 提供了一致的事务管理界面，可以管理小到一个本地事务（例如，使用一个数据库）和大到全局事务（例如，使用 JTA）。</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="什么是控制反转ioc和依赖项注入" style="font-size: 30px;">3. 什么是控制反转(IoC)和依赖项注入?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">依赖注入和控制反转是对同一件事情的不同描述，从某个方面讲，就是它们描述的角度不同。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">依赖注入是从应用程序的角度描述，可以把依赖注入描述完整点：应用程序依赖容器创建并注入它所需要的外部资源；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">而控制反转是从容器的角度描述，描述完整点：容器控制应用程序，由容器反向的向应用程序注入应用程序所需要的外部资源。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Java 中，依赖注入可能发生 3 种注入方式：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">构造方法注入；</li>
+<li style="font-size: 20px; line-height: 38px;">setter 方法注入；</li>
+<li style="font-size: 20px; line-height: 38px;">接口注入。</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="spring-框架的-ioc-是怎么样的" style="font-size: 30px;">4. Spring 框架的 IoC 是怎么样的?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.beans 和 org.springframework.context 包是 Spring 框架 IoC 容器的基础。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory 接口提供了一个高级的配置机制来管理任意属性的对象。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ApplicationContext 接口基于 BeanFactory 构建（是一个子接口）并添加其他功能，如：Spring 的 AOP 功能、信息资源处理（用于国际化）、事件传播和应用程序层的特定上下文如在 Web 应用程序中使用 WebApplicationContext。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.beans.factory.BeanFactory 是 Spring IoC 容器真实展现，负责管理上述 Bean。BeanFactory 接口是 Spring IoC 容器接口的核心。</p>
+</div><div class="cl-preview-section"><h2 id="beanfactory-和-applicationcontext-之间的区别" style="font-size: 30px;"><strong>5. BeanFactory 和 ApplicationContext 之间的区别?</strong></h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一个 BeanFactory 就像包含 bean 集合的工厂类。BeanFactory 在内部持有多个 Bean 的定义，当客户端请求 bean 时，将 bean 进行实例化。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">初始化时 BeanFactory 能够保持对象的依赖关系。这减轻了负担从 bean 本身和 bean 客户机的配置。 BeanFactory 在一个 bean 的生命周期也能起作用，它可以调用 bean 的自定义初始化和销毁方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">表面上看，applicationContext 和 BeanFactory 是一样。同样加载 bean 定义，将 bean 连接在一起，分发 bean。但 applicationContext 还提供：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">一种解析消息的手段，包括对国际化的支持；</li>
+<li style="font-size: 20px; line-height: 38px;">一个更通用的加载文件资源的方法；</li>
+<li style="font-size: 20px; line-height: 38px;">bean 事件注册为监听器。</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">三个常用的 ApplicationContext 实现是：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>ClassPathXmlApplicationContext</strong>：它从 classpath 路径下的一个 XML 文件加载 Context ，将 Context 作为 classpath 下的资源。加载应用程序 classpath 下的 Context 使用的代码如下：</li>
+</ul>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">ApplicationContext context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassPathXmlApplicationContext</span><span class="token punctuation">(</span>“bean<span class="token punctuation">.</span>xml”<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+</code></pre>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>FileSystemXmlApplicationContext</strong>：它从文件系统的一个 XML 文件加载上下文定义的。从文件系统加载应用程序上下文通过如下代码实现：</li>
+</ul>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">ApplicationContext context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileSystemXmlApplicationContext</span><span class="token punctuation">(</span>“bean<span class="token punctuation">.</span>xml”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>XmlWebApplicationContext</strong>：它从一个 Web 应用程序中包含的 XML 文件加载 Context。</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="将-spring-配置应用程序的方式有哪些呢" style="font-size: 30px;">6. 将 Spring 配置应用程序的方式有哪些呢?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">配置 Spring 到您的应用程序有 3 种方式：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">基于 XML 的配置；</li>
+<li style="font-size: 20px; line-height: 38px;">基于注解的配置；</li>
+<li style="font-size: 20px; line-height: 38px;">基于 Java 的配置。</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="基于-xml-的-spring-配置是什么样子的" style="font-size: 30px;">7. 基于 XML 的 Spring 配置是什么样子的?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Spring 框架中，bean 所需的依赖和服务定义在配置文件中，配置文件通常是 XML 格式。通常这些配置文件都以<code>&lt;beans&gt;</code>标签开始，含有大量的 bean 定义和特定于应用程序的配置选项。Spring XML 配置的主要目标是让所有 Spring 组件通过使用 XML 配置文件。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这意味着不会出现任何其他类型的 Spring 配置（如通过 Java 类注释或配置）。Spring XML 配置中使用 Spring 命名空间提供的 XML 标记中使用的配置；Spring 命名空间主要有：context、bean、jdbc、tx、aop、mvc 等。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- JSON Support --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewResolver<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>org.springframework.web.servlet.view.BeanNameViewResolver<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jsonTemplate<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>org.springframework.web.servlet.view.json.MappingJackson2JsonView<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>restTemplate<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>org.springframework.web.client.RestTemplate<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最简单的让您的应用程序加载配置文件和配置运行时组件方式是在 web.xml 文件中配置 DispatcherServlet，如下所示：</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>web-app</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>display-name</span><span class="token punctuation">&gt;</span></span>Archetype Created Web Application<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>display-name</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">&gt;</span></span>spring<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-class</span><span class="token punctuation">&gt;</span></span> org.springframework.web.servlet.DispatcherServlet <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-class</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>load-on-startup</span><span class="token punctuation">&gt;</span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>load-on-startup</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-mapping</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">&gt;</span></span>spring<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url-pattern</span><span class="token punctuation">&gt;</span></span>/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url-pattern</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-mapping</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>web-app</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="基于-java-的-spring-配置是什么样子的" style="font-size: 30px;">8. 基于 Java 的 Spring 配置是什么样子的?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在支持 Spring 的新 Java 配置组件中，@Configuration 注解的类和 @Bean 注解的方法是核心组件。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Bean 注解用于通过方法来实例化，配置和初始化一个新的由 Spring IoC 容器管理的对象。@Bean 注解和<code>&lt;bean/&gt;</code> 元素扮演相同的角色。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在一个类上使用 @Configuration 注解，其主要用途是作为 bean 定义的来源。此外，在同一个类中@Configuration 类允许 inter-bean 定义通过简单地调用实现依赖关系。最简单的 @Configuration 注解类如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AppConfig</span> <span class="token punctuation">{</span> 
+    <span class="token annotation punctuation">@Bean</span> 
+    <span class="token keyword">public</span> MyService <span class="token function">myService</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">MyServiceImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上面注解类等价于基于 XML 配置文件如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>myService<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.services.MyServiceImpl<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了使这样的配置能生效，需要使用 AnnotationConfigApplicationContext 的帮助。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+    ApplicationContext ctx <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnnotationConfigApplicationContext</span><span class="token punctuation">(</span>AppConfig<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     
+    MyService myService <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">getBean</span><span class="token punctuation">(</span>MyService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span> myService<span class="token punctuation">.</span><span class="token function">doStuff</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+<span class="token punctuation">}</span>
+
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为使组件扫描生效，只需要 @Configuration 类注解如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Configuration</span> 
+<span class="token annotation punctuation">@ComponentScan</span><span class="token punctuation">(</span>basePackages <span class="token operator">=</span> <span class="token string">"com.howtodoinjava"</span><span class="token punctuation">)</span> 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AppConfig</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在上面的示例中 com.howtodoinjava 包将被扫描，寻找任何带注解 @Component 的类，这些类将在容器内登记为 Spring Bean。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果你使用以上的方式配置一个 Web 应用程序，那么需要 AnnotationConfigWebApplicationContext 类来使之生效。AnnotationConfigWebApplicationContext 的使用可以通过配置 Spring ContextLoaderListener 的 servlet listener，Spring MVC DispatcherServlet 等。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>web-app</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- Configure ContextLoaderListener to use AnnotationConfigWebApplicationContext instead of the default XmlWebApplicationContext --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>context-param</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">&gt;</span></span>contextClass<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">&gt;</span></span> 						org.springframework.web.context.support.AnnotationConfigWebApplicationContext 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">&gt;</span></span> 
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>context-param</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- Configuration locations must consist of one or more comma- or space-delimited fully-qualified @Configuration classes. Fully-qualified packages may also be specified for component-scanning --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>context-param</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">&gt;</span></span>contextConfigLocation<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">&gt;</span></span>com.howtodoinjava.AppConfig<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">&gt;</span></span> 
+ 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>context-param</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- Bootstrap the root application context as usual using ContextLoaderListener --&gt;</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>listener</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>listener-class</span><span class="token punctuation">&gt;</span></span>org.springframework.web.context.ContextLoaderListener<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener-class</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- Declare a Spring MVC DispatcherServlet as usual --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">&gt;</span></span>dispatcher<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-class</span><span class="token punctuation">&gt;</span></span>org.springframework.web.servlet.DispatcherServlet<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-class</span><span class="token punctuation">&gt;</span></span> <span class="token comment">&lt;!-- Configure DispatcherServlet to use AnnotationConfigWebApplicationContext instead of the default XmlWebApplicationContext --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>init-param</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">&gt;</span></span>contextClass<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">&gt;</span></span> org.springframework.web.context.support.AnnotationConfigWebApplicationContext <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>init-param</span><span class="token punctuation">&gt;</span></span> <span class="token comment">&lt;!-- Again, config locations must consist of one or more comma- or space-delimited and fully-qualified @Configuration classes --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>init-param</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">&gt;</span></span>contextConfigLocation<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">&gt;</span></span>com.howtodoinjava.web.MvcConfig<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>init-param</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- map all requests for /app/* to the dispatcher servlet --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-mapping</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">&gt;</span></span>dispatcher<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url-pattern</span><span class="token punctuation">&gt;</span></span>/app/*<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url-pattern</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-mapping</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>web-app</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="基于-spring-注解的配置是什么样子的" style="font-size: 30px;">9. 基于 Spring 注解的配置是什么样子的?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从 Spring 2.5 就可以使用注解来配置依赖注入。而不是使用 XML 来描述一个 bean 的注入，你可以通过使用注解相关的类，方法或字段声明将 bean 配置的移到注解类本身。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注释注入执行 XML 注入之前，因此后者配置将会覆盖前者属性连接通过这两种方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">默认情况下，Spring 容器没有打开自动注解功能。所以在使用具有 Spring 注解之前，我们需要在我们的 Spring 配置文件启用它。如果你想在 Spring 应用程序中使用的自动注解，考虑配置文件上加上下面的配置。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> 
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">context:</span>annotation-config</span><span class="token punctuation">/&gt;</span></span> <span class="token comment">&lt;!-- bean definitions go here --&gt;</span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一旦配置了<code>&lt;context:annotation-config/&gt;</code>，表明在 Spring 中您可以开始使用属性，方法和构造函数的自动注入。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一些重要的注解：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Required</strong>：@Required 注解适用于 bean 属性 setter 方法；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Autowired</strong>：@Autowired 注解可以适用于 bean 属性 setter 方法、non-setter 方法、构造函数和属性；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>@Qualifier</strong>：@Qualifier 注解加上 @Autowired 可以用来消除多个 bean 混乱来保证唯一的 bean 注入；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>jsr - 250 注释</strong>：Spring 支持基于 jsr - 250 的注解如 @Resource、@PostConstruct 和 @PreDestroy。</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="请解释一下-spring-bean-的生命周期" style="font-size: 30px;">10.请解释一下 Spring Bean 的生命周期?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一个 Spring Bean 的生命周期很容易理解。当一个 bean 实例化时可能需要执行一些初始化动作进入使 bean 达到一个可用的状态。同样，当不再需要 bean 时，将 bean 从容器中移除，可能需要销毁。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring BeanFactory 通过 Spring 容器负责管理 bean 的生命周期。bean 的生命周期包括可以大体分类为两类的回调方法</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">初始化后的回调方法；</li>
+<li style="font-size: 20px; line-height: 38px;">销毁前的回调方法。</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 框架提供了以下 4 种方法控制 bean 的生命周期事件：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">InitializingBean 和 DisposableBean 回调接口；</li>
+<li style="font-size: 20px; line-height: 38px;">其他知道接口为特定的行为；</li>
+<li style="font-size: 20px; line-height: 38px;">定制的 init() 和 destroy() 方法在 bean 配置文件；</li>
+<li style="font-size: 20px; line-height: 38px;">@PostConstruct 和 @PreDestroy 注解。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">例如： customInit() 和 customDestroy() 方法生命周期方法的例子。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>demoBean<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.task.DemoBean<span class="token punctuation">"</span></span> <span class="token attr-name">init-method</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customInit<span class="token punctuation">"</span></span> <span class="token attr-name">destroy-method</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customDestroy<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="spring-bean-的作用域-scope-有哪些" style="font-size: 30px;">11. Spring Bean 的作用域 scope 有哪些?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 容器中的 bean 有 5 种 scope，分别是：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>单例 singleton</strong>：默认情况下都是单例的，它要求在每个 Spring 容器内不论你请求多少次这个实例，都只有一个实例。单例特性是由 BeanFactory 本身维护的；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>原型 prototype</strong>：这个 bean 的实例和单例相反，一个新的请求产生一个新的 bean 实例；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>请求 request</strong>：在一个请求内，将会为每个 Web 请求的客户端创建一个新的 bean 实例。一旦请求完成后，bean 将失效，然后被垃圾收集器回收掉；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>会话 session</strong>：就像请求范围，这样可以确保每个用户会话 bean 的一个实例。当用户结束其会话，bean 失效；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>全局会话 global-session</strong>：应用到 Portlet 应用程序。基于 Servlet 的应用程序和会话相同。</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="spring-的内部-bean-是什么" style="font-size: 30px;">12. Spring 的内部 Bean 是什么?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Spring 框架中，当一个 bean 只用于一个特定属性，建议将它声明为一个内在的 bean。内部 bean 同时支持 setter 注入属性和构造函数注入“constructor-arg”。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">例如，假设一个 Customer 类的引用 Person 类。在我们的应用程序中，我们将只创建一个 Person 类的实例，并在 Customer 使用它。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Customer</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">private</span> Person person<span class="token punctuation">;</span> 
+    <span class="token comment">//Setters and Getters </span>
+<span class="token punctuation">}</span> 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span> 
+    <span class="token keyword">private</span> String address<span class="token punctuation">;</span> 
+    <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span> 
+    <span class="token comment">//Setters and Getters </span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">现在内部 bean 声明是这样的：</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>CustomerBean<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.common.Customer<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>person<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+        <span class="token comment">&lt;!-- This is inner bean --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.common.Person<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>adminis<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>India<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>age<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>34<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="在-spring-框架中，单例-bean-是线程安全的吗" style="font-size: 30px;">13. 在 Spring 框架中，单例 Bean 是线程安全的吗?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 框架不对单例的 bean 做任何多线程的处理。单例的 bean 的并发问题和线程安全是开发人员的责任。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">而实际上，大多数 Spring Bean 没有可变状态（例如服务和 DAO 的类），这样的话本身是线程安全的。但如果您的 bean 有可变状态（例如视图模型对象），这就需要你来确保线程安全。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这个问题最简单和明显的解决方案是改变 bean Scope，可变的 bean 从“单例”到“原型”。</p>
+</div><div class="cl-preview-section"><h2 id="如何在-spring-里注入-java-集合请给个例子好吗" style="font-size: 30px;">14. 如何在 Spring 里注入 Java 集合?请给个例子好吗?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 提供了四种类型的配置元素集合，如下:</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;list&gt;</code>：帮助注入一组值，允许重复；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;set&gt;</code>：帮助注入一组值，不允许重复；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;map&gt;</code>：帮助注入一个 K-V 的集合，名称和值可以是任何类型的；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;props&gt;</code>：帮助注入一个名称-值对集合，名称和值都是字符串。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">让我们看看每种类型的例子。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- Definition for javaCollection --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>javaCollection<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.JavaCollection<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+        <span class="token comment">&lt;!-- java.util.List --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customList<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>list</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>INDIA<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>Pakistan<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>USA<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>UK<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>list</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token comment">&lt;!-- java.util.Set --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customSet<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>set</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>INDIA<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>Pakistan<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>USA<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>UK<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>set</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token comment">&lt;!-- java.util.Map --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customMap<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>entry</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>INDIA<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>entry</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Pakistan<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>entry</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>USA<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>entry</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>4<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>UK<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>map</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token comment">&lt;!-- java.util.Properties --&gt;</span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customProperies<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>props</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prop</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>admin<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>admin@nospam.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prop</span><span class="token punctuation">&gt;</span></span> 
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prop</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>support<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>support@nospam.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prop</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>props</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="如何将一个-java.util-属性注入到-spring-bean-" style="font-size: 30px;">15. 如何将一个 java.util 属性注入到 Spring Bean ?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第一个方法是使用<code>&lt;props&gt;</code>标记如下。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>adminUser<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.common.Customer<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- java.util.Properties --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>emails<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>props</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prop</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>admin<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>admin@nospam.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prop</span><span class="token punctuation">&gt;</span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prop</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>support<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>support@nospam.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prop</span><span class="token punctuation">&gt;</span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>props</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">也可以使用“util:“名称空间创建 bean 的属性文件，并使用 bean 的 setter 方法注入。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">util:</span>properties</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>emails<span class="token punctuation">"</span></span> <span class="token attr-name">location</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>classpath:com/foo/emails.properties<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="解释一下-spring-bean-的自动注入是怎么样的" style="font-size: 30px;">16. 解释一下 Spring Bean 的自动注入是怎么样的?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Spring 框架中，在配置文件中设置 bean 的依赖是一个很好的办法，但 Spring 容器也能够自动注入不同 bean 之间的关系。这意味着，通过检查 BeanFactory 的内容它可以为您的 bean 自动注入其他 bean。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以为每个 bean 指定是否自动注入，因此可以支持一些 Bean 支持自动注入，而一些 bean 不会自动注入。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面从 XML 配置文件摘录了自动根据名称注入的 bean。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>employeeDAO<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.EmployeeDAOImpl<span class="token punctuation">"</span></span> <span class="token attr-name">autowire</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>byName<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">除了提供的自动装配模式 bean 配置文件，也可以在 bean 类中指定自动装配使用 @Autowired 注释。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>Tips</strong>：在 bean 类使用 @Autowired 注解，您必须在 Spring 应用程序中先启用下面的注解。</p>
+</blockquote>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">context:</span>annotation-config</span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">也可以通过在配置文件使用 AutowiredAnnotationBeanPostProcessorbean 来完成。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml">&lt;bean class ="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/&gt;
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">现在，当注释配置已经启用，您可以自由使用 @Autowired 来自动注入 bean 依赖关系，以你喜欢的方式。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Autowired</span> 
+<span class="token keyword">public</span> <span class="token function">EmployeeDAOImpl</span> <span class="token punctuation">(</span> EmployeeManager manager <span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">this</span><span class="token punctuation">.</span>manager <span class="token operator">=</span> manager<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="请解释一下不同的-bean-自动注入模式" style="font-size: 30px;">17. 请解释一下不同的 bean 自动注入模式?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Spring 有五个自动注入模式。让我们逐个讨论。</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>no</strong>：默认情况下，Spring 框架的自动注入选项，即默认情况不开启自动注入。这意味着你必须使用标签在 bean 定义中显式地设置依赖项；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>byName</strong>：这个选项是基于 bean 的名称的依赖项注入。当自动装配在 bean 属性，用属性名搜索匹配的 bean 定义配置文件。如果找到这样的 bean，注入属性。如果没有找到这样的 bean，就会产生一个错误；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>byType</strong>：该选项允许基于 bean 的类型的依赖项注入。当在 bean 属性需要自动注入时，使用属性类的类型来搜索匹配的 bean 定义配置文件。如果找到这样的 bean，注入属性。如果没有找到这样的 bean，就会产生一个错误；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>constructor</strong>：构造方法类似于 byType 自动注入，但适用于构造方法的参数。在自动注入 bean 时，它在所有构造函数参数类型中寻找匹配的构造函数的类类型参数，然后进行自动注入。请注意，如果在容器中没有一个 bean 构造函数参数类型满足，会抛出一个致命错误；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>autodetect</strong>：自动侦测使用两种模式即构造函数或 byType 模式的自动注入。首先它将试图寻找有效的构造方法参数，如果发现构造方法模式则选择。如果没有构造方法中定义 bean，或者明确的默认无参构造方法，则选择 byType 模式自动注入。</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="怎么打开基于注释的自动注入的" style="font-size: 30px;">18. 怎么打开基于注释的自动注入的?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">要启用 @Autowired，你必须注册 AutowiredAnnotationBeanPostProcessor，你可以用两种方式。</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">在 bean 配置文件使用<code>&lt;context:annotation-config &gt;</code>。</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">context:</span>annotation-config</span> <span class="token punctuation">/&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">直接将 AutowiredAnnotationBeanPostProcessor 放到 bean 配置文件。</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="能否用例子解释一下-required-注解吗" style="font-size: 30px;">19. 能否用例子解释一下 @Required 注解吗?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在大规模的应用程序中，IoC 容器中可能会有成百上千的 bean 声明，以及它们之间的依赖关系通常是非常复杂的。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">setter 注入的缺点之一是，很难给你检查出所需的所有属性是否已经注入。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了克服这个问题，您可以设置 bean 的“dependency-check”属性，可以设置四个属性的其中之一即 none， simple， objects or all (没有一个是默认选项)。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在现实生活中应用程序中，您将不会感兴趣检查所有上下文中的 bean 属性配置文件。而你想要检查一些特定的 bean 是否已设置特定的属性。在这种情况下，Spring 的依赖项检查功能将不再适用。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了解决这个问题，您可以使用 @Required 注解。在 bean 属性使用 @Required 注解的 setter 方法类文件如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmployeeFactoryBean</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractFactoryBean</span><span class="token operator">&lt;</span>Object<span class="token operator">&gt;</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">private</span> String designation<span class="token punctuation">;</span> 
+    <span class="token keyword">public</span> String <span class="token function">getDesignation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token keyword">return</span> designation<span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+    <span class="token annotation punctuation">@Required</span> 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setDesignation</span><span class="token punctuation">(</span>String designation<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token keyword">this</span><span class="token punctuation">.</span>designation <span class="token operator">=</span> designation<span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+    <span class="token comment">//more code here </span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">RequiredAnnotationBeanPostProcessor 是一个 Spring Bean 后置处理程序，检查 @Required 注解的所有的 bean 属性是否已设置。使用这个 bean 属性检查后置处理程序，您必须注册在 Spring IoC 容器中。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果 @Required 注解的任何属性没有设置，这个 bean 的处理器会抛出一个 BeanInitializationException 异常。</p>
+</div><div class="cl-preview-section"><h2 id="能否用例子解释一下-autowired-注解吗" style="font-size: 30px;">20.能否用例子解释一下 @Autowired 注解吗?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Autowired 注解提供了更细粒度的控制，以及应该如何完成自动注入。@Autowired 注解和 @Required 注解一样，可用于 bean 的自动注入，它可以作用于构造方法，属性或具有任意名称和/或多个参数的方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">例如，您可以使用 @Autowired 注解的 setter 方法来代替在 XML 配置文件中的<code>&lt;property&gt;</code>元素。当 Spring 找到一个 @Autowired 注解的方法，它尝试使用 byType 自动注入的方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">您可以将 @Autowired 应用到构造方法。一个构造方法使用 @Autowired 注解表明，即使在 XML 文件没有配置 bean 的<code>&lt;constructor-arg&gt;</code>元素，当创建 bean 时，构造方法也会自动注入。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TextEditor</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">private</span> SpellChecker spellChecker<span class="token punctuation">;</span> 
+    <span class="token annotation punctuation">@Autowired</span> 
+    <span class="token keyword">public</span> <span class="token function">TextEditor</span><span class="token punctuation">(</span>SpellChecker spellChecker<span class="token punctuation">)</span><span class="token punctuation">{</span> 
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Inside TextEditor constructor."</span> <span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token keyword">this</span><span class="token punctuation">.</span>spellChecker <span class="token operator">=</span> spellChecker<span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">spellCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> 
+        spellChecker<span class="token punctuation">.</span><span class="token function">checkSpelling</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">没有构造方法参数的配置。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">context:</span>annotation-config</span><span class="token punctuation">/&gt;</span></span> 
+    <span class="token comment">&lt;!-- Definition for textEditor bean without constructor-arg --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>textEditor<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.TextEditor<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token comment">&lt;!-- Definition for spellChecker bean --&gt;</span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>spellChecker<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.SpellChecker<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>beans</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="能否用例子讲解一下-qualifier-注解吗？" style="font-size: 30px;">21. 能否用例子讲解一下 @Qualifier 注解吗？</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Qualifier 限定哪个 bean 应该被自动注入。当 Spring 无法判断出哪个 bean 应该被注入时，@Qualifier 注解有助于消除歧义 bean 的自动注入。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">参见下面的例子：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Customer</span> <span class="token punctuation">{</span> <span class="token annotation punctuation">@Autowired</span> <span class="token keyword">private</span> Person person<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们有两个 bean 定义为 Person 类的实例。</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customer<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.common.Customer<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>personA<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.common.Person<span class="token punctuation">"</span></span> <span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>lokesh<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>personB<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.howtodoinjava.common.Person<span class="token punctuation">"</span></span> <span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>alex<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 知道哪个 bean 应该自动注入?不。当您运行上面的例子时，抛出如下异常：</p>
+</div><div class="cl-preview-section"><pre class="  language-bash"><code class="prism  language-bash">Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No unique bean of <span class="token function">type</span> <span class="token punctuation">[</span>com.howtodoinjava.common.Person<span class="token punctuation">]</span> is defined: expected single matching bean but found 2: <span class="token punctuation">[</span>personA, personB<span class="token punctuation">]</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">要解决以上问题，你需要使用 @Quanlifier 注解告诉 Spring 哪个 bean 应该被 autowired 的。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Customer</span> <span class="token punctuation">{</span> 
+    <span class="token annotation punctuation">@Autowired</span> 
+    <span class="token annotation punctuation">@Qualifier</span><span class="token punctuation">(</span><span class="token string">"personA"</span><span class="token punctuation">)</span> 
+    <span class="token keyword">private</span> Person person<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="构造方法注入和-setter-注入之间的区别吗" style="font-size: 30px;">22. 构造方法注入和 setter 注入之间的区别吗?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有以下几点明显的差异：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">在 Setter 注入，可以将依赖项部分注入，构造方法注入不能部分注入，因为调用构造方法如果传入不匹配的参数就会报错；</li>
+<li style="font-size: 20px; line-height: 38px;">如果我们为同一属性提供 Setter 和构造方法注入，Setter 注入将覆盖构造方法注入。但是构造方法注入不能覆盖 setter 注入值。显然，构造方法注入被称为创建实例的第一选项；</li>
+<li style="font-size: 20px; line-height: 38px;">使用 setter 注入你不能保证所有的依赖都被注入，这意味着你可以有一个对象依赖没有被注入。在另一方面构造方法注入直到你所有的依赖都注入后才开始创建实例；</li>
+<li style="font-size: 20px; line-height: 38px;">在构造函数注入，如果 A 和 B 对象相互依赖：A 依赖于 B，B 也依赖于 A，此时在创建对象的 A 或者 B 时，Spring 抛出 ObjectCurrentlyInCreationException。所以 Spring 可以通过 setter 注入，从而解决循环依赖的问题。</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="spring-框架的事件类型有哪些" style="font-size: 30px;">23. spring 框架的事件类型有哪些?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 的 ApplicationContext 具有代码层上支持事件和监听器的功能。我们可以创建 bean 监听通过 ApplicationContext 发布的事件。ApplicationContext 里的事件处理通过提供 ApplicationEvent 类和 ApplicationListener 接口来完成。所以如果一个 bean 实现了 ApplicationListener 接口，当一个 ApplicationEvent 发布到 ApplicationContext 时，该 bean 将接到通知。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AllApplicationEventListener</span> <span class="token keyword">implements</span> <span class="token class-name">ApplicationListener</span> <span class="token operator">&lt;</span> ApplicationEvent <span class="token operator">&gt;</span> <span class="token punctuation">{</span> 
+    <span class="token annotation punctuation">@Override</span> 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onApplicationEvent</span><span class="token punctuation">(</span>ApplicationEvent applicationEvent<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token comment">//process event </span>
+    <span class="token punctuation">}</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 提供了以下 5 个标准事件:</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>ContextRefreshedEvent</strong>：当 ApplicationContext 初始化或刷新时发布这个事件。这个事件也可以通过 ConfigurableApplicationContext 接口的 refresh() 方法来触发；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>ContextStartedEvent</strong>：当 ApplicationContext 被 ConfigurableApplicationContext 接口的 start() 方法启动时发布这个事件。你可以在收到这一事件后查询你的数据库或重启/启动任何停止的应用程序；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>ContextStoppedEvent</strong>：当 ApplicationContext 被 ConfigurableApplicationContext 接口的 stop() 方法关闭时发布这个事件。你可以在收到这一事件后做一些清理工作；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>ContextClosedEvent</strong>：当 ApplicationContext 时被 ConfigurableApplicationContext 接口的 close() 方法关闭时发布这个事件。一个终结的上下文达到生命周期结束，它不能刷新或重启；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>RequestHandledEvent</strong>：这是一个网络自身的事件，告诉所有 bean：HTTP 请求服务已经处理完成。</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">除了上面的事件，您可以通过扩展 ApplicationEvent 类创建自定义事件。如：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomApplicationEvent</span> <span class="token keyword">extends</span> <span class="token class-name">ApplicationEvent</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">public</span> <span class="token function">CustomApplicationEvent</span> <span class="token punctuation">(</span> Object source， <span class="token keyword">final</span> String msg <span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token keyword">super</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Created a Custom event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">监听这个事件，创建一个监听器是这样的：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomEventListener</span> <span class="token keyword">implements</span> <span class="token class-name">ApplicationListener</span> <span class="token operator">&lt;</span> CustomApplicationEvent <span class="token operator">&gt;</span> <span class="token punctuation">{</span> 
+    <span class="token annotation punctuation">@Override</span> 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onApplicationEvent</span><span class="token punctuation">(</span>CustomApplicationEvent applicationEvent<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token comment">//handle event </span>
+    <span class="token punctuation">}</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">发布这个事件：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">CustomApplicationEvent customEvent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CustomApplicationEvent</span><span class="token punctuation">(</span> applicationContext<span class="token punctuation">,</span> <span class="token string">"Test message"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span> 
+applicationContext<span class="token punctuation">.</span><span class="token function">publishEvent</span> <span class="token punctuation">(</span> customEvent <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="filesystemresource-和-classpathresource-之间的区别吗" style="font-size: 30px;">24. FileSystemResource 和 ClassPathResource 之间的区别吗?</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 FileSystemResource 中你需要给出 spring-config.xml（Spring 配置）文件相对于您的项目的相对路径或文件的绝对位置。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 ClassPathResource 中 Sping 查找文件使用 ClassPath，因此 spring-config.xml 应该包含在类路径下。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一句话，ClassPathResource 在类路径下搜索和 FileSystemResource 在文件系统下搜索。</p>
+</div><div class="cl-preview-section"><h2 id="列举一下-spring-框架使用的一些设计模式？" style="font-size: 30px;">25. 列举一下 Spring 框架使用的一些设计模式？</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有很多不同的设计模式，但有一些明显的:</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>代理</strong>：在 AOP 大量使用，还有远程模块；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>单例</strong>：Spring 配置文件中定义的 bean 默认是单例；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>模板方法</strong>：广泛使用处理重复逻辑的代码。例如 RestTemplate， JmsTemplate， JpaTemplate；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>前端控制器</strong>：Spring 提供了 DispatcherServlet，确保传入请求被分派到你的控制器；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>视图助手</strong>：Spring 有许多定制 JSP 标记，和 velocity 宏，协助在视图层分离展示代码；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>依赖注入</strong>：BeanFactory / ApplicationContext 的核心概念；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>工厂模式</strong>：BeanFactory 创建一个对象的实例。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">原文：不可链接</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2060">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            46 Spring AOP 总结及面试热点题目集萃
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2062">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            48 Spring展望及后续(未完)
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

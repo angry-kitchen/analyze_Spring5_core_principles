@@ -1,0 +1,267 @@
+<html><head><meta charset="utf-8"><title>33 SpEL String应用示例及背后原理探究-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        33 SpEL String应用示例及背后原理探究
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-04 19:31:30
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img2.sycdn.imooc.com/5ecf1a9300018a3f06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">不安于小成，然后足以成大器；不诱于小利，然后可以立远功。——方孝孺<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在以前的篇章中，JavaBean 都是静态的，简单的赋值。本节开始，我们开始尝试着让 JavaBean 动起来！<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f210c9a0001ef4902200220.gif" data-original="//img1.sycdn.imooc.com/5f210c9a0001ef4902200220.gif" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">想要让 JavaBean 动起来，就需要支持很多动态的赋值和复杂的运算方式，正如有过 JSP + Servlet 基础的童鞋一定会联想到 EL 表达式。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 也提供了对 EL 表达式的支持，Spring Expression Language 简称 SpEL。</p>
+</div><div class="cl-preview-section"><h2 id="spel-概述" style="font-size: 30px;">SpEL 概述</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">SpEL 创建的初衷是给 Spring 社区提供一种简单而高效的表达式语言，一种可贯穿整个 Spring 产品组的语言。这种语言的特性基于 Spring 产品的需求而设计，这是它出现的一大特色。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">SpEL 是一种强大的表达式语言，支持在 bean 创建时或运行时查询和操作对象。它类似于其他表达式语言，如 JSP EL、OGNL、MVEL 和 JBoss EL 等，还有一些附加特性，如方法调用和基本的字符串模板功能。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">语法形式：</p>
+</div><div class="cl-preview-section"><pre class="  language-plain"><code class="prism  language-plain">#{ expression }
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">它可以用来：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它可以用于注入一个 bean 或另一个 bean 中的一个 bean 属性：</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>car<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{car}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+<p style="font-size: 20px; line-height: 38px;">或者：</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token comment">&lt;!-- 引用其他对象的属性 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>carName<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{car.name}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它可以用来调用另一个 bean 中的一个 bean 方法：</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token comment">&lt;!-- 引用其他对象的方法 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>carPrint<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{car.print()}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它可用于执行任何标准的数学、逻辑或关系操作：</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token comment">&lt;!-- 3 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>num<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{2+1}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+<span class="token comment">&lt;!-- 1 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>num<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{2-1}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+<span class="token comment">&lt;!-- 4 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>num<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{2*2}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+<span class="token comment">&lt;!-- 3 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>num<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{9/3}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它可以用来执行条件检查三元运算符：</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token comment">&lt;!-- 真 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>numStr<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{(10&gt;3)?<span class="token punctuation">'</span>真<span class="token punctuation">'</span>:<span class="token punctuation">'</span>假<span class="token punctuation">'</span>}<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它可用于获取映射或列表的元素：</p>
+<pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>mapA<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{testBean.map[<span class="token punctuation">'</span>MapA<span class="token punctuation">'</span>]}<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>list<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#{testBean.list[0]}<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</li>
+</ul>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>Tips</strong>：SpEL 并不依附于 Spring 容器，它也可以独立于容器解析。因此，我们在书写自己的逻辑、框架的时候，也可以借助 SpEL 定义支持一些高级表达式 。</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="spel-深入探秘" style="font-size: 30px;">SpEL 深入探秘</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">想要看看 SpEL 是如何运作的吗？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f2228d8000193cb06000282.jpg" data-original="//img1.sycdn.imooc.com/5f2228d8000193cb06000282.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">那就来一个最简单的示例程序：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f210e270001ee8a06400230.jpg" data-original="//img1.sycdn.imooc.com/5f210e270001ee8a06400230.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">运行结果为：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">HELLO WORLD</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">是不是比较神奇？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">程序也简单到作为 java 程序员都懂的地步：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第一步：创建一个表达式解析器 ExpressionParser，调用解析器的 parseExpression 方法解析 String 的表达式；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第二步：根据表达式，计算最终结果。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这个就涉及到一个计算机的概念，抽象语法树（Abstract Syntax Tree，AST），或简称语法树（Syntax tree），是源代码语法结构的一种抽象表示。它以树状的形式表现编程语言的语法结构，树上的每个节点都表示源代码中的一种结构。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f29464d0001581501900243.jpg" data-original="//img1.sycdn.imooc.com/5f29464d0001581501900243.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">要想生成 AST，就需要分词和语法分析。Spring 提供了分词器和语法分析器：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>分词器 Tokenizer</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过 debug 上述的程序，可以看到分词后的结果：</p>
+</div><div class="cl-preview-section"><pre><code>[[IDENTIFIER:new](0,3), [IDENTIFIER:String](4,10), [LPAREN(()](10,11), [LITERAL_STRING:'hello world'](11,24), [RPAREN())](24,25), [DOT(.)](25,26), [IDENTIFIER:toUpperCase](26,37), [LPAREN(()](37,38), [RPAREN())](38,39)]
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">分词的词根在 TokenKind.java 中，定义了一个枚举来定义所有的分词，定义多达 95 中词根：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f29465d00014a8b03820738.jpg" data-original="//img1.sycdn.imooc.com/5f29465d00014a8b03820738.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>语法分析器 InternalSpelExpressionParser</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">进一步分析的结果是最终生成节点 SpelNodeImpl 树的实现，本文中生成两个节点实现，一个 ConstructorReference 和一个 MethodReference。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f29466b0001c08706260341.jpg" data-original="//img1.sycdn.imooc.com/5f29466b0001c08706260341.jpg" alt="图片描述"><br>
+生成代码树的代码在语法分析器 InternalSpelExpressionParser 的 eatPrimaryExpression 方法<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946780001f1e406400266.jpg" data-original="//img1.sycdn.imooc.com/5f2946780001f1e406400266.jpg" alt="图片描述"><br>
+其中 ConstructorReference 的生成代码如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946210001d94312690904.png" data-original="//img1.sycdn.imooc.com/5f2946210001d94312690904.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">MethodReference 的生成代码如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946900001957706400290.jpg" data-original="//img1.sycdn.imooc.com/5f2946900001957706400290.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">那么除了上面简单示例中提到的 SpelNodeImpl 节点实现外，还有其他哪些节点 SpelNodeImpl 实现呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">节点 SpelNodeImpl 树的实现类：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f29469d0001bf8c06400481.jpg" data-original="//img1.sycdn.imooc.com/5f29469d0001bf8c06400481.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">根据不同的节点类型，生成不同的节点过程如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946b1000139ea06400336.jpg" data-original="//img1.sycdn.imooc.com/5f2946b1000139ea06400336.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>表达式计算</strong><br>
+表达式计算一般通过调用 SpelNodeImpl 实现类的 getValueInternal 方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>SpEL 运行流程</strong><br>
+通过深入 debug 上述示例，可以程序的整个流程。它分成三个部分：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>节点树生成</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946bf0001164605190615.jpg" data-original="//img1.sycdn.imooc.com/5f2946bf0001164605190615.jpg" alt="图片描述"></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">重点代码在 eatPrimaryExpression 中：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946cf0001b73a06400263.jpg" data-original="//img1.sycdn.imooc.com/5f2946cf0001b73a06400263.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Constructor 表达式计算</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946de00011dc603960260.jpg" data-original="//img1.sycdn.imooc.com/5f2946de00011dc603960260.jpg" alt="图片描述"></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">重点代码：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946ec0001de1d06620219.jpg" data-original="//img1.sycdn.imooc.com/5f2946ec0001de1d06620219.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Method 表达式计算</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2946fb0001781106400233.jpg" data-original="//img1.sycdn.imooc.com/5f2946fb0001781106400233.jpg" alt="图片描述"></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">执行方法 ReflectiveMethodExecutor.java#execute<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f29470e0001fb4a06400295.jpg" data-original="//img1.sycdn.imooc.com/5f29470e0001fb4a06400295.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring3.x 引入的 SpEL 可谓非常的惊艳，它的实现非常的复杂，但它的使用却异常的简单和灵活。它给 Spring 外部化配置注入了更多的活力，它让我们在运行时赋值、改变值都轻松的成为了可能~</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>分词器 Tokenizer</strong>：将 String 转化为语法分析器可以识别的词；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>语法分析器 SpelExpressionParser</strong>：将可分析的词组成 ast 树；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>计算部分 SpelNodeImpl</strong>：的实现类中通过 getValueInternal 获取。</li>
+</ul>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2046">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            32 数据转换总结及常见面试题目解析
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2048">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            34 SpEL List和Map 引用应用示例及背后原理探究
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img2.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

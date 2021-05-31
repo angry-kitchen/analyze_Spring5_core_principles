@@ -1,0 +1,260 @@
+<html><head><meta charset="utf-8"><title>13 我的人生我做主揭秘Bean的生命周期-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        13 我的人生我做主揭秘Bean的生命周期
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-04 14:00:44
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5ece0a250001adaf06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">成功的奥秘在于目标的坚定。——迪斯雷利<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring Bean 的生命周期是 Spring 面试热点问题。这个问题即考察对 Spring 的微观了解，又考察对 Spring 的宏观认识，想要答好并不容易！Spring Bean 的生命周期贯穿了 Spring IoC 的整个过程，掌握了 Spring Bean 的生命周期等同于掌握了 Spring IoC 本身。</p>
+</div><div class="cl-preview-section"><h2 id="spring-ioc-容器-bean-生命周期概述" style="font-size: 30px;">Spring IoC 容器 Bean 生命周期概述</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">代码不会说谎，但人会。网上看到的资料很多是人云亦云或者是资料已经过期，所以阅读源码成了必然选择。通过简单的示例，抽出 Spring BeanFactory 中 Bean 的生命周期大大超出了我们的预期，原来我们以前看到的或者记住的只是真实中的一部分！</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5eddd0a10001bf6006400352.jpg" data-original="//img1.sycdn.imooc.com/5eddd0a10001bf6006400352.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="bean-生成策略" style="font-size: 30px;">Bean 生成策略</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory 中 Bean 的生成有两种策略：构造器方式和 CGLIB。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5eddd0ae0001633703520292.jpg" data-original="//img1.sycdn.imooc.com/5eddd0ae0001633703520292.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">实现逻辑在 SimpleInstantiationStrategy.java#instantiate() 如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f28f59500012bcb10970757.png" data-original="//img1.sycdn.imooc.com/5f28f59500012bcb10970757.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. CGLIB</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">CGLIB（Code Generator Library）是一个强大的、高性能的代码生成库。CGLIB 代理主要通过对字节码的操作，为对象引入间接级别，以控制对象的访问。我们知道 Java 中有一个动态代理也是做这个事情的，那我们为什么不直接使用 Java 动态代理，而要使用 CGLIB 呢？答案是 CGLIB 相比于 JDK 动态代理更加强大，JDK 动态代理虽然简单易用，但是其有一个致命缺陷是，只能对接口进行代理。如果要代理的类为一个普通类、没有接口，那么 Java 动态代理就没法使用了。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd0c60001fe8204500279.jpg" data-original="//img1.sycdn.imooc.com/5eddd0c60001fe8204500279.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 构造器方式</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>BeanUtils.instantiateClass(constructorToUse);</code></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，BeanUtils 是一个工具栏，它提供了对 javaBean 进行操作的很多便利方法，例如初始化 Bean，检查 Bean 属性类型，复制 Bean 属性。BeanUtils#instantiateClass() 最终通过使用 Constructor.newInstance 方法来实例化 Bean。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意：BeanUtils 的最著名的两个方法：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">copyProperties</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">instantiateClass</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="bean-生命周期实例程序" style="font-size: 30px;">Bean 生命周期实例程序</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Debug 测试程序：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd0d2000134dd06310306.jpg" data-original="//img1.sycdn.imooc.com/5eddd0d2000134dd06310306.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用最简单的测试类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd0df0001b46406200409.jpg" data-original="//img1.sycdn.imooc.com/5eddd0df0001b46406200409.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">说明：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">GenericBeanDefinition 是一站式定义标准 Bean 的类；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">MutablePropertyValues 用来操作属性，支持深度从 Map 从拷贝属性。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过 GenericBeanDefinition 构造一个 Bean，然后通过 MutablePropertyValues 来设置该 Bean 的属性，最后注册该 Bean 到 IoC 容器 DefaultListableBeanFactory，构成一个最小完整的生命周期过程。</p>
+</div><div class="cl-preview-section"><h2 id="深入-spring-ioc-容器-bean-生命周期源码" style="font-size: 30px;">深入 Spring IoC 容器 Bean 生命周期源码</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">放大招了，调试源码的技巧：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">SimpleInstantiationStrategy#instantiate() 方法，抛出异常调用链：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd0ed00016e2e06400405.jpg" data-original="//img1.sycdn.imooc.com/5eddd0ed00016e2e06400405.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上面两处打上断点（可选），Debug：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd0f80001f8e105520308.jpg" data-original="//img1.sycdn.imooc.com/5eddd0f80001f8e105520308.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 registerBeanDefinition 的时候并没有生成实例 instance，而是在 getBean 的时候才生成 instance，即延迟加载。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd1040001bf1016000253.jpg" data-original="//img1.sycdn.imooc.com/5eddd1040001bf1016000253.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Instantiation of bean failed; nested exception is java.lang.NullPointerException: use constructor to create instance</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们修改源码后抛出的异常，走的是构造器生成实例。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">时序图如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd10e0001c0b306400438.jpg" data-original="//img1.sycdn.imooc.com/5eddd10e0001c0b306400438.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AbstractAutowireCapableBeanFactory#createBean()</strong>。</p>
+</div><div class="cl-preview-section"><h3 id="创建-bean-之前的处理器">创建 Bean 之前的处理器</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5eddd11c000192de06400669.jpg" data-original="//img1.sycdn.imooc.com/5eddd11c000192de06400669.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>InstantiationAwareBeanPostProcessor#postProcessBeforeInitialization</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>InstantiationAwareBeanPostProcessor#postProcessAfterInitialization</strong>。</p>
+</div><div class="cl-preview-section"><h3 id="创建-bean-的处理逻辑">创建 Bean 的处理逻辑</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">创建 Bean 的过程在 AbstractAutowireCapableBeanFactory#doCreateBean() 方法，主要有</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">创建 Bean 的实例，注册 PropertyEditorRegistry；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">BeanPostProcessor 处理，这一阶段常用的注解被处理如 @Autowired、@Resource、@WebServiceRef、 @EJB、@Required、@Scheduled 等。</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">将要用的 Bean 提前注入到容器 BeanFactory 中，如创建 AOP 代理的类 DefaultAdvisorAutoProxyCreator，BeanNameAutoProxyCreator 等。</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">设置 Bean 属性；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">注册 DisposableBean。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><h4 id="创建-bean-实例" style="font-size: 26px;">创建 Bean 实例</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AbstractAutowireCapableBeanFactory#createBeanInstance</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1.</strong> 创建 Bean：</p>
+</div><div class="cl-preview-section"><pre class=" language-java"><code class="prism  language-java"> beanInstance <span class="token operator">=</span> <span class="token function">getInstantiationStrategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">instantiate</span><span class="token punctuation">(</span>mbd<span class="token punctuation">,</span> beanName<span class="token punctuation">,</span> parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2.</strong> 使用 BeanWrapper 包装：registerCustomEditors() 注册 PropertyEditorRegistry。</p>
+</div><div class="cl-preview-section"><h4 id="beanpostprocessor-处理" style="font-size: 26px;">BeanPostProcessor 处理</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors</strong>；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition</strong>。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd13000013fc306250207.jpg" data-original="//img1.sycdn.imooc.com/5eddd13000013fc306250207.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h4 id="将要用到的-bean-提前注册到-beanfactory" style="font-size: 26px;">将要用到的 Bean 提前注册到 BeanFactory</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5eddd13c0001fd2b06640185.jpg" data-original="//img1.sycdn.imooc.com/5eddd13c0001fd2b06640185.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h4 id="初始化-bean" style="font-size: 26px;">初始化 Bean</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>AbstractAutowireCapableBeanFactory#initializeBean</strong>：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f28f94e000163dc14400940.png" data-original="//img1.sycdn.imooc.com/5f28f94e000163dc14400940.png" alt="图片描述"><br>
+<strong>1. populateBean</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第一阶段： InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第二阶段：InstantiationAwareBeanPostProcessor#postProcessProperties；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第三阶段：设置属性，BeanDefinitionValueResolver。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. initializeBean</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第一阶段：BeanNameAware，BeanClassLoaderAware，BeanFactoryAware；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第二阶段：BeanPostProcessor#postProcessBeforeInitialization；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第三阶段：invokeInitMethods，InitializingBean.afterPropertiesSet()，执行自定义的 init() 方法；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第四阶段：BeanPostProcessor#applyBeanPostProcessorsAfterInitialization。</p>
+</div><div class="cl-preview-section"><h4 id="注册-disposablebean" style="font-size: 26px;">注册 DisposableBean</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f28f9800001016f11560747.png" data-original="//img1.sycdn.imooc.com/5f28f9800001016f11560747.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean 的生命周期是 Spring 的重点难点，这方面的材料网上汗牛充栋，我从网上拿到一张比较接近的图片。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eddd163000190e206400385.jpg" data-original="//img1.sycdn.imooc.com/5eddd163000190e206400385.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从上图可以看到，Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Spring 容器销毁 Bean，这其中包含了一系列关键点。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意：FactoryBean 和 BeanFactory</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">“factory bean” refers to a bean that is configured in the Spring container and that creates objects through an instance or static factory method.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单的说，FactoryBean 是一个特殊的 Bean，它由 Spring 容器（如 BeanFactory 或者 ApplicationContext）管理，它通过静态工厂方法和实例来创建一个对象。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2026">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            12 @Autowired是如何工作的？--Spring注解源码深度揭秘
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2028">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            14 离开了Spring，IoC容器还可以怎么做？
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img3.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

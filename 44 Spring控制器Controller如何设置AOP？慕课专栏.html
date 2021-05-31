@@ -1,0 +1,214 @@
+<html><head><meta charset="utf-8"><title>44 Spring控制器Controller如何设置AOP？-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        44 Spring控制器Controller如何设置AOP？
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-31 10:52:22
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ed0c28700014f5006400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">学习这件事不在乎有没有人教你，最重要的是在于你自己有没有觉悟和恒心。 —— 法布尔<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">做项目时碰到 Controller 不能使用 AOP 进行拦截，从网上搜索得知：使用 Spring MVC 启动了两个 context：ApplicationContext 和 WebApplicationContext 。</p>
+</div><div class="cl-preview-section"><h2 id="排查分析" style="font-size: 30px;">排查分析</h2>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">ContextLoaderListener 创建基于 Web 的应用根 ApplicationContext 并将它放入到 ServletContext。ApplicationContext 加载或者卸载 Spring 管理的 beans。在 Structs 和 Spring MVC 的控制层都是这样使用的；</li>
+<li style="font-size: 20px; line-height: 38px;">DispatcherServlet 创建自己的 WebApplicationContext 并管理这个 WebApplicationContext 里面的 handlers/controllers/view-resolvers；</li>
+<li style="font-size: 20px; line-height: 38px;">当 ContextLoaderListener 和 DispatcherServlet 一起使用时, ContextLoaderListener 先创建一个根 ApplicationContext，然后 DispatcherSerlvet 创建一个子 ApplicationContext 并且绑定到根 ApplicationContext。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">首先来看看 web.xml 的定义：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f4c58590001e8ea06400461.jpg" data-original="//img1.sycdn.imooc.com/5f4c58590001e8ea06400461.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一般的 Web 应用，通过 ContextLoaderListener 监听，ContextLoaderListener 中加载的 context 成功后，Spring 将 ApplicationContext 存放在 ServletContext 中 key 值为"org.springframework.web.context.WebApplicationContext.ROOT"的 attribute 中。</p>
+</div><div class="cl-preview-section"><pre class=" language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>listener</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>listener-class</span><span class="token punctuation">&gt;</span></span>
+        org.springframework.web.context.ContextLoaderListener
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener-class</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>context-param</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">&gt;</span></span>contextConfigLocation<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">&gt;</span></span>classpath*:conf/applicationContext*.xml<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>context-param</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">DispatcherServlet 加载的 context 成功后，会将 ApplicationContext 存放在 org.springframework.web.servlet.FrameworkServlet.CONTEXT. + (servletName)的 attribute 中。</p>
+</div><div class="cl-preview-section"><pre class=" language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet</span><span class="token punctuation">&gt;</span></span> 
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">&gt;</span></span>mvcServlet<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">&gt;</span></span> 
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-class</span><span class="token punctuation">&gt;</span></span>org.springframework.web.servlet.DispatcherServlet<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-class</span><span class="token punctuation">&gt;</span></span> 
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>init-param</span><span class="token punctuation">&gt;</span></span> 
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">&gt;</span></span>contextConfigLocation<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">&gt;</span></span> 
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">&gt;</span></span>classpath:conf/spring-dispatcher-servlet.xml<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>init-param</span><span class="token punctuation">&gt;</span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>load-on-startup</span><span class="token punctuation">&gt;</span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>load-on-startup</span><span class="token punctuation">&gt;</span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当然，如果没有指定 <code>*servlet.xml</code>配置，则默认使用 DispatcherServlet 的默认配置 DispatcherServlet.properties。</p>
+</div><div class="cl-preview-section"><pre class=" language-properties"><code class="prism  language-properties"><span class="token comment"># Default implementation classes for DispatcherServlet's strategy interfaces. </span>
+<span class="token comment"># Used as fallback when no matching beans are found in the DispatcherServlet context. </span>
+<span class="token comment"># Not meant to be customized by application developers. </span>
+<span class="token attr-name">org.springframework.web.servlet.LocaleResolver</span><span class="token punctuation">=</span><span class="token attr-value">org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver </span>
+<span class="token attr-name">org.springframework.web.servlet.ThemeResolver</span><span class="token punctuation">=</span><span class="token attr-value">org.springframework.web.servlet.theme.FixedThemeResolver </span>
+<span class="token attr-name">org.springframework.web.servlet.HandlerMapping</span><span class="token punctuation">=</span><span class="token attr-value">org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,\ org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping </span>
+<span class="token attr-name">org.springframework.web.servlet.HandlerAdapter</span><span class="token punctuation">=</span><span class="token attr-value">org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,\ org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,\ org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter</span>
+<span class="token attr-name">org.springframework.web.servlet.HandlerExceptionResolver</span><span class="token punctuation">=</span><span class="token attr-value">org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver,\
+</span></code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单的来说：Spring Bean 的管理在 ApplicationContext 中，ContextLoaderListener 的作用：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">将 ApplicationContext 的生命周期和 servletContext 的生命周期联系到一起；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">自动管理 ApplicationContext 的创建，ContextLoaderListener 给我们提供了一个便利，不用显式的去创建 ApplicationContext。</p>
+</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">DispatcherServlet 相关 bean 的管理在 WebApplicationContext，ServletContextListener 创建 WebApplicationContext，WebApplicationContext 可以访问 ServletContext/ServletContextAware 这些 bean，还可以访问 getServletContext 方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">正式的官方文档：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">A web application can define any number of DispatcherServlets. Each servlet will operate in its own namespace, loading its own application context with mappings, handlers, etc. Only the root application context as loaded by ContextLoaderListener, if any, will be shared. As of Spring 3.1, DispatcherServlet may now be injected with a web application context, rather than creating its own internally. This is useful in Servlet 3.0+ environments, which support programmatic registration of servlet instances.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在一个 Web 应用中使用多个 DispatcherServlet，每个 Servlet 通过自己的命名空间来获取自己的 WebApplicationContext，然后加载此 ApplicationContext 里面的 HangdlerMapping，HandlerAdapter 等等。ContextLoaderListener 加载根 application，所有子 ApplicationContext 共享根 ApplicationContext。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从版本 3.1 后，Spring 支持将 DispatcherServlet 注入到根 ApplicationContext，而不用创建自己的 WebApplicationContext，这主要为支持 Servlet 3.0 以上版本环境的要求，因为 Servlet 3.0 以上版本支持使用编程的方式来注册 Servlet 实例。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 支持使用多层层次 ApplicationContext，通常我们使用两层结构就够了。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f4c621a00015dc305340246.jpg" data-original="//img1.sycdn.imooc.com/5f4c621a00015dc305340246.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="解决问题" style="font-size: 30px;">解决问题</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当 Controller 和 Service 不在同一个 ApplicationContext 中，如一个配置在 Root ApplicationContext，一个配置在 WebApplicationContext 中，虽然在 WebApplicationContext 使用了 AOP 配置，并且也生效了，但在 Controller 时却不能生效，原因就在于上面所说的两个不同 ApplicationContext，如果想要解决这个问题，可以使用两种方式：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">1.在 root ApplicationContext 同样配置 AOP 开关；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">2.从版本 3.1 后，Spring 支持将 DispatcherServlet 注入到根 ApplicationContext，可以使用同一套 AOP 注解。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">因 Spring 继承 Spring MVC 时，生成了两个 ApplicationContext，ContextLoaderListener 创建基于 Web 的应用根 ApplicationContext 并将它放入到 ServletContext。DispatcherServlet 创建自己的 WebApplicationContext 并管理这个 WebApplicationContext 里面的 bean。当需要在 Controller 层设置 AOP 时：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在低版本（3.1 之前）的 Spring 中，那么需要将 <code>&lt;aop:aspectj-autoproxy proxy-target-class="true"/&gt;</code>配置到 dispatcher-servlet.xml（MVC 文件）当中并且设置包扫描规则为 <strong>"use-default-filters=“true”</strong>。 将横切关注点封装为切面，切面中方法的注入是根据切点表达式来决定的。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">高版本的 Spring 中，Spring 支持将 DispatcherServlet 注入到根 ApplicationContext，而不用创建自己的 WebApplicationContext，这时使用同一套 ApplicationContext 就不会出现上面的问题了。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2057">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            43 离开了 Spring AOP，我们如何切面编程？
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2059">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            45 Spring中多个AOP如何协调执行？
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

@@ -1,0 +1,194 @@
+<html><head><meta charset="utf-8"><title>19 Spring MVC应用拓展Resource应用于文件下载-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        19 Spring MVC应用拓展Resource应用于文件下载
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-06-24 17:59:51
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ece0b890001515e06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">不要问你的国家能够为你做些什么，而要问你可以为国家做些什么。——林肯<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 SpringMVC 的开发过程中，有时需要实现文档的下载功能。Word、Excel、PDF 作为大家最常用的办公程序，它的文件传输就显得尤为重要，我们本节就以这些类型为例。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下载的方法有很多种：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">1.常见的方式就是<strong>流</strong>：<br>
+<img class="" src="http://p1.pstatp.com/large/pgc-image/59491cff9100430fb2391ee5847ef294" data-original="http://p1.pstatp.com/large/pgc-image/59491cff9100430fb2391ee5847ef294" alt="img"><br>
+先将文件转成输入流形式，然后将输入流写入到 response 的输出流中。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">2.也可以通过 <strong>HttpEntity</strong> 来实现：<br>
+<img class="" src="http://p1.pstatp.com/large/pgc-image/f263d4d6ad3548a3a7f0acf1bc1b947d" data-original="http://p1.pstatp.com/large/pgc-image/f263d4d6ad3548a3a7f0acf1bc1b947d" alt="img"><br>
+其中，HttpEntity 包含了报文头和报文体。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们一直强调：一切皆资源。我们如何通过 Resource 来实现实现 docx、xlsx、pdf 文件下载功能呢？</p>
+</div><div class="cl-preview-section"><h2 id="resource-实现文件下载功能" style="font-size: 30px;">Resource 实现文件下载功能</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/e80ae01c55d74d2384de2bb0c4f1fcd9" data-original="http://p9.pstatp.com/large/pgc-image/e80ae01c55d74d2384de2bb0c4f1fcd9" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>提前准备好文件</strong><br>
+<img class="" src="http://p1.pstatp.com/large/pgc-image/b24b3905e94c4e45a7dfabe33f527cca" data-original="http://p1.pstatp.com/large/pgc-image/b24b3905e94c4e45a7dfabe33f527cca" alt="img"><br>
+三种格式的文件：Word、Excel、PDF。<br>
+其中 PDF 可以直接展示，Word 和 Excel 直接作为附件下载。</p>
+</div><div class="cl-preview-section"><h3 id="创建-maven-项目，选择-web-项目">1.1 创建 Maven 项目，选择 Web 项目</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/02e138cf8e8842ba9ff8ba1dca35849c" data-original="http://p1.pstatp.com/large/pgc-image/02e138cf8e8842ba9ff8ba1dca35849c" alt="img"></p>
+</div><div class="cl-preview-section"><h3 id="添加依赖">1.2 添加依赖</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p3.pstatp.com/large/pgc-image/a739e3e13ffd4ebf8237574d47feb764" data-original="http://p3.pstatp.com/large/pgc-image/a739e3e13ffd4ebf8237574d47feb764" alt="img"></p>
+</div><div class="cl-preview-section"><h3 id="修改或者添加配置文件">1.3 修改或者添加配置文件</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">web.xml 替换类<br>
+<img class="" src="http://p1.pstatp.com/large/pgc-image/b8715429576c4609a7fa36b7cf16998e" data-original="http://p1.pstatp.com/large/pgc-image/b8715429576c4609a7fa36b7cf16998e" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">dispatcher-servlet.xml 替换类<br>
+<img class="" src="http://p3.pstatp.com/large/pgc-image/4762e8117341488dbac0e53ed335c7a8" data-original="http://p3.pstatp.com/large/pgc-image/4762e8117341488dbac0e53ed335c7a8" alt="img"></p>
+</div><div class="cl-preview-section"><h3 id="控制器-controller">1.4 控制器 Controller</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/066bfef8aa474cd7a50687c6aed45a6e" data-original="http://p9.pstatp.com/large/pgc-image/066bfef8aa474cd7a50687c6aed45a6e" alt="img"></p>
+</div><div class="cl-preview-section"><h3 id="测试结果">1.5 测试结果</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">发送请求：<a href="http://localhost:8080/mvc1/hello/download?file=high-performancejson-postgresqlvs-170928121153.pdf">http://localhost:8080/mvc1/hello/download?file=high-performancejson-postgresqlvs-170928121153.pdf</a></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p3.pstatp.com/large/pgc-image/193fd325d44d4fafa56d1e6a4df39576" data-original="http://p3.pstatp.com/large/pgc-image/193fd325d44d4fafa56d1e6a4df39576" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">PDF 文件进行展示，Word 和 Excel 直接作为附件下载。</p>
+</div><div class="cl-preview-section"><h2 id="拓展" style="font-size: 30px;">拓展</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上述示例中 HttpServletResponse 使用了 Content-Type 和报文头 Content-Disposition，他们的用法有什么不同呢？</p>
+</div><div class="cl-preview-section"><h3 id="content-type"><strong>Content-Type</strong></h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Content-type 的格式如下：Content-Type = “Content-Type”:" media-type"，它指明了通信使用的类型，示例：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>Content-Type: text/html; charset=ISO-8859-4</code></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，media-type 定义在 spring-web 的/org/springframework/http/mime.types 中，种类很多。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/91d166f055d24078922de537ce73c6d3" data-original="http://p9.pstatp.com/large/pgc-image/91d166f055d24078922de537ce73c6d3" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">它通过 MediaTypeFactory 来产生 MediaType，常用的 MediaType 类型主要有：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/7e11c976a29d4a22ae5ad1cfbadf228a" data-original="http://p1.pstatp.com/large/pgc-image/7e11c976a29d4a22ae5ad1cfbadf228a" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意：当你在响应类型为 application/octet- stream 情况下（“Content-type: application/octet-stream”）使用了这个头信息的话，那就意味着你不想直接显示内容，而是弹出一个"文件下载"的对话框，接下来就是由你来决定"打开"还是"保存" 了。</p>
+</div><div class="cl-preview-section"><h3 id="content-disposition"><strong>Content-disposition</strong></h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Content-disposition 是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。Content-disposition 其实可以控制用户请求所得的内容存为一个文件的时候提供一个默认的文件名，文件直接在浏览器上显示或者在访问时弹出文件下载对话框。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Content-Disposition 的格式如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p3.pstatp.com/large/pgc-image/635f5a68ab4342c6bad5666da0e2ec37" data-original="http://p3.pstatp.com/large/pgc-image/635f5a68ab4342c6bad5666da0e2ec37" alt="img"></p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Resource 集成了 InputStreamSource，在拥有 InputStreamSource 的 getInputStream 的同时，也封装了很多其它功能。Resource 抽象了物理世界中的资源概念：一切皆资源。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">它的很多实现类如 UrlResource，FileUrlResource，FileSystemResource，ClassPathResource，ByteArrayResource，InputStreamResource 使它可以操作 URL、文件、URL 形式的文件，classpath 下的资源，byte 数组资源和 InputStream 等资源。Resource 接口封装了各种可能的资源类型，也就是对使用者来说屏蔽了文件类型的不同。对资源的提供者来说，如何把资源包装起来交给其他人用这也是一个问题，我们看到 Resource 接口继承了 InputStreamSource 接口，这个接口中有个 getInputStream 方法，返回的是 InputStream 类。这样所有的资源都被可以通过 InputStream 这个类来获取，所以也屏蔽了资源的提供者。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2069">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            18 Spring IoC容器如何读取应用外部的xml，txt，图形或者属性文件？
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2034">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            20 面试官，请不要再问我@Resource和@Autowire注解的区别了
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

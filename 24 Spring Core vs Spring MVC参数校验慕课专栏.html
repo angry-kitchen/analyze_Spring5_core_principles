@@ -1,0 +1,182 @@
+<html><head><meta charset="utf-8"><title>24 Spring Core vs Spring MVC参数校验-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        24 Spring Core vs Spring MVC参数校验
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-04 18:23:28
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ecf15c90001d2a206400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">先相信你自己，然后别人才会相信你。——屠格涅夫<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在任何时候，当你要处理一个应用程序的业务逻辑，数据校验是你必须要考虑和面对的事情。应用程序必须通过某种手段来确保输入进来的数据从语义上来讲是正确的。在通常的情况下，应用程序是分层的，不同的层由不同的开发人员来完成。很多时候同样的数据验证逻辑会出现在不同的层，这样就会导致代码冗余和一些管理的问题，比如说语义的一致性等。为了避免这样的情况发生，最好是将验证逻辑与相应的域模型进行绑定。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Bean Validation 为 JavaBean 验证定义了相应的元数据模型和 API。缺省的元数据是 Java Annotations，通过使用 XML 可以对原有的元数据信息进行覆盖和扩展。Bean Validation 是一个运行时的数据验证框架，在验证之后验证的错误信息会被马上返回。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee977f100011de404680304.png" data-original="//img1.sycdn.imooc.com/5ee977f100011de404680304.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Hibernate Validator 是 Bean Validation 的参考实现 。Hibernate Validator 提供了 JSR 303、JSR 349 、JSR 380 规范中所有内置 constraint 的实现，除此之外还有一些附加的 constraint。</p>
+</div><div class="cl-preview-section"><h2 id="spring-mvc-使用-hibernate-validator-进行参数校验实例" style="font-size: 30px;">Spring MVC 使用 Hibernate-Validator 进行参数校验实例</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. 加入 Hibernate 依赖</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee9785b0001e32206400337.png" data-original="//img1.sycdn.imooc.com/5ee9785b0001e32206400337.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 定义 Bean</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee978740001d90c04690392.png" data-original="//img1.sycdn.imooc.com/5ee978740001d90c04690392.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>3. 控制器 Controller</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee9788a0001dfee06400312.png" data-original="//img1.sycdn.imooc.com/5ee9788a0001dfee06400312.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>4. postman 测试</strong><br>
+header：Content-Type application/x-www-form-urlencoded</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f2936e80001437308390359.png" data-original="//img1.sycdn.imooc.com/5f2936e80001437308390359.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">测试结果：</p>
+</div><div class="cl-preview-section"><pre><code>registration-done
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="原理探秘" style="font-size: 30px;">原理探秘</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">将参数 email 置空，此时抛出异常：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee978dc0001fa5406400305.png" data-original="//img1.sycdn.imooc.com/5ee978dc0001fa5406400305.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看出异常发生在获取参数，验证参数时发生异常。在 InvocableHandlerMethod.java#invokeForRequest 方法打断点，一步步追踪。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f29355800014f0509540423.jpg" data-original="//img1.sycdn.imooc.com/5f29355800014f0509540423.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，重点是 Spring 通过适配器 SpringValidatorAdapter 来调用 Hibernate 的 ValidatorImpl.java#validate 实现：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ee9791f000164cb08190161.png" data-original="//img1.sycdn.imooc.com/5ee9791f000164cb08190161.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="valid-vs-validated" style="font-size: 30px;">@Valid vs @Validated</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring Validation 验证框架对参数的验证机制提供了@Validated（Spring’s JSR-303 规范，是标准 JSR-303 的一个变种），javax 提供了 @Valid（标准JSR-303规范），配合 BindingResult 可以直接提供参数验证结果。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在检验 Controller 的入参是否符合规范时，使用 @Validated 或者 @Valid 在基本验证功能上没有太多区别。但是在分组、注解地方、嵌套验证等功能上两个有所不同。</p>
+</div><div class="cl-preview-section"><h3 id="分组">1. 分组</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>@Validated</strong>：提供了一个分组功能，可以在入参验证时，根据不同的分组采用不同的验证机制，可参考高效使用hibernate-validator校验框架；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>@Valid</strong>：作为标准JSR-303规范，不支持分组的功能。</p>
+</div><div class="cl-preview-section"><h3 id="注解作用的位置">2. 注解作用的位置</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>@Validated</strong>：可以用在类型、方法和方法参数上。但是不能用在成员属性（字段）上；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>@Valid</strong>：可以用在方法、构造函数、方法参数和成员属性（字段）上。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">对于任何一个应用而言在客户端做的数据有效性验证都不是安全有效的，这时候就要求我们在开发的时候在服务端也对数据的有效性进行验证。 SpringMVC 自身对数据在服务端的校验（Hibernate Validator）有一个比较好的支持，它能将我们提交到服务端的数据按照我们事先的约定进行数据有效性验证，对于不合格的数据信息 SpringMVC 会把它保存在错误对象中（Errors接口的子类），这些错误信息我们也可以通过 SpringMVC 提供的标签（form:errors）在前端 JSP 页面上进行展示。或者使用拦截器 after 方法对处理错误信息进行处理后传递给页面（我们使用JSON请求的时候就需要这样做）。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2037">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            23 Spring Core参数校验之JSR-303_JSR-349注解
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2070">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            25 Spring Core 数据绑定之BeanWrapper实现示例及背后原理探究
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img3.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

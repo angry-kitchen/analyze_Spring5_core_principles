@@ -1,0 +1,208 @@
+<html><head><meta charset="utf-8"><title>34 SpEL List和Map 引用应用示例及背后原理探究-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        34 SpEL List和Map 引用应用示例及背后原理探究
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-06 10:33:34
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5f2b6bf90001145706400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">读书给人以快乐、给人以光彩、给人以才干。——培根<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 XML 的方式进行 Spring 配置，对于内部元素为 String 的 List 和 Map 属性的注入一般为如下方式：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f21111c00015de405500423.png" data-original="//img1.sycdn.imooc.com/5f21111c00015de405500423.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">那么，如何在一个 Bean 中引用另外一个 Bean 中的 map 和 list 属性的其中一个值呢？正如 SpEL 表达式所表现的动态性，可以这样做到：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f21129a0001278d08450215.jpg" data-original="//img1.sycdn.imooc.com/5f21129a0001278d08450215.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">想知道上面配置实现的背后的原理吗？让我们一起动手来看看吧！</p>
+</div><div class="cl-preview-section"><h2 id="spel-list-和-map-引用示例" style="font-size: 30px;">SpEL List 和 Map 引用示例</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">想要了解内部的原理，就需要 debug，想要 debug，就需要一个最简单的示例程序：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">引用测试 bean 的类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2112ad0001a99304040672.jpg" data-original="//img1.sycdn.imooc.com/5f2112ad0001a99304040672.jpg" alt="图片描述"></p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">引用 bean 的类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2112c00001148904660536.jpg" data-original="//img1.sycdn.imooc.com/5f2112c00001148904660536.jpg" alt="图片描述"></p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">配置文件，在 classpath 路线下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2112f90001da3108580141.jpg" data-original="//img1.sycdn.imooc.com/5f2112f90001da3108580141.jpg" alt="图片描述"></p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">测试类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2113230001a7bf06400250.jpg" data-original="//img1.sycdn.imooc.com/5f2113230001a7bf06400250.jpg" alt="图片描述"></p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">测试结果：</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Customer [mapA=This is A, list=List0]</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="spel-list-和-map-引用背后原理探秘" style="font-size: 30px;">SpEL list 和 Map 引用背后原理探秘</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f2114e20001133e02690695.jpg" data-original="//img1.sycdn.imooc.com/5f2114e20001133e02690695.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过洋像葱剥皮一样一层层的深入 debug，重要找到核心层。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>主链路：生成 AST 树</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 StandardBeanExpressionResolver.java#evaluate()，为什么呢？在这个方法里面将表达式转化为 AST：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2114f90001197906400403.jpg" data-original="//img1.sycdn.imooc.com/5f2114f90001197906400403.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Map 的表达式“#{testBean.map[‘MapA’]}”解析成 AST 的结构如下图所示：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f211516000136b306320845.jpg" data-original="//img1.sycdn.imooc.com/5f211516000136b306320845.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">它分成三层，从最顶层的 testBean，到中间层 map，到最底层的 SpelNodeImpl 实现。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">同样 List 的表达式“#{testBean.list[0]}”生成的 AST 结构如下图所示：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f21156a00013e5805290844.jpg" data-original="//img1.sycdn.imooc.com/5f21156a00013e5805290844.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">同样，它也分成三层，从最顶层的 testBean，到中间层 list，到最底层的 SpelNodeImpl 实现。到了这里，其实还可以接着深入进去，</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了方便，可以通过程序抛出异常的方式来查看完整的调用链路。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>完整链路：调用链</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 PropertyOrFieldReference 的调用链上抛出异常，抛出异常可以打印出到这里的整个调用链。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f21157e000144ba07000199.jpg" data-original="//img1.sycdn.imooc.com/5f21157e000144ba07000199.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">结果如下：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">15:02:53.370 [main] WARN o.s.c.s.ClassPathXmlApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name ‘customerBean’: Unsatisfied dependency expressed through field ‘mapA’; nested exception is org.springframework.beans.factory.BeanExpressionException: Expression parsing failed; nested exception is java.lang.NullPointerException</p>
+<p style="font-size: 20px; line-height: 38px;">…</p>
+<p style="font-size: 20px; line-height: 38px;">…</p>
+<p style="font-size: 20px; line-height: 38px;">at com.davidwang456.test.AppMain.main(AppMain.java:11)</p>
+<p style="font-size: 20px; line-height: 38px;">…</p>
+<p style="font-size: 20px; line-height: 38px;">… 19 more</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">整理出时序图如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f21159d000113ef06400221.jpg" data-original="//img1.sycdn.imooc.com/5f21159d000113ef06400221.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中，StandardBeanExpressionResolver 包装了表达式解析器 ExpressionParser，它的最终实现是<strong>语法分析器 SpelExpressionParser，词法分析器 SpelExpressionParser</strong>将可分析的词组成 AST 。然后顺序执行。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring3.x 引入的 SpEL 可谓非常的惊艳，它的实现非常的复杂，但它的使用却异常的简单和灵活。它给 Spring 外部化配置注入了更多的活力，它让我们在运行时赋值、改变值都轻松的成为了可能。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2047">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            33 SpEL String应用示例及背后原理探究
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2049">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            35 SpEL 操作符应用示例及背后原理探究
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img2.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

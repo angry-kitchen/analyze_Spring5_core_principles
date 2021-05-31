@@ -1,0 +1,217 @@
+<html><head><meta charset="utf-8"><title>27 Spring MVC数据绑定InitBinder揭秘-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        27 Spring MVC数据绑定InitBinder揭秘
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-04 18:53:37
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img2.sycdn.imooc.com/5ecf19470001d29e06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">人生的旅途，前途很远，也很暗。然而不要怕，不怕的人的面前才有路。—— 鲁 迅<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在使用 SpingMVC 框架的项目中，经常会遇到页面某些数据要转换成类型是 Date、Integer、Double 等的数据绑定到控制器的实体。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 提供了很多的将表单数据转换到特定类型的 PropertyEditor 实现类，如 CustomDateEditor、CustomBooleanEditor、CustomNumberEditor 等将页面数据转换到特定的数据类型，在绑定表单之前，都会先注册这些编辑器，SpringMVC 提供了使用注解 <code>@InitBinder</code> 来解决注册这些类型转换器，然后通过例如@ModelAttribute 类似的注解来绑定表单数据到 JavaBean。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一般会将这些方法些在 BaseController 中，需要进行这类转换的控制器只需继承 BaseController 即可。PropertyEditor 实现类很多，大部分场景是够用的。如果业务比较特殊，可以继承 PropertyEditorSupport 自定义一个类型转换器。</p>
+</div><div class="cl-preview-section"><h2 id="实例" style="font-size: 30px;">实例</h2>
+</div><div class="cl-preview-section"><h3 id="准备一个普通的-mvc-项目">准备一个普通的 MVC 项目</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. 创建 Maven 项目，选择 Web 项目：</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f0d165b0001beb006340571.jpg" data-original="//img1.sycdn.imooc.com/5f0d165b0001beb006340571.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 添加依赖：</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d167400015fa905120517.jpg" data-original="//img1.sycdn.imooc.com/5f0d167400015fa905120517.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>3. 修改或者添加配置文件：</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">web.xml 替换类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d169000014bee06400346.jpg" data-original="//img1.sycdn.imooc.com/5f0d169000014bee06400346.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">dispatcher-servlet.xml 替换类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d16a6000117eb06400461.jpg" data-original="//img1.sycdn.imooc.com/5f0d16a6000117eb06400461.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>4. 控制器 Controller：</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d16d60001cfdb06400371.jpg" data-original="//img1.sycdn.imooc.com/5f0d16d60001cfdb06400371.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中 User 定义如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d16e300010b6f04600476.jpg" data-original="//img1.sycdn.imooc.com/5f0d16e300010b6f04600476.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="postman-测试">Postman 测试</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">启动 Web 项目，可以添加 Jetty 或者 Tomcat 插件来启动，本文以 Jetty 为例，添加 Jetty 依赖：</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">&gt;</span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.eclipse.jetty<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>jetty-maven-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>9.4.8.v20171121<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">&gt;</span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 <code>jetty:run</code> 启动，然后利用 Postman 进行测试。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Header ：<code>Content-Type application/x-www-form-urlencoded</code>。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d16fd000139fc06400434.jpg" data-original="//img1.sycdn.imooc.com/5f0d16fd000139fc06400434.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">结果：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d1712000192b708320218.jpg" data-original="//img1.sycdn.imooc.com/5f0d1712000192b708320218.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="深入原理" style="font-size: 30px;">深入原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从 DispatcherServlet 开始，所有的请求统一追踪到 <code>InvocableHandlerMethod#invokeForRequest</code> 获取参数。<br>
+![<img class="" src="https://img1.sycdn.imooc.com/5f0d17b80001feb006400232.png" data-original="//img1.sycdn.imooc.com/5f0d17b80001feb006400232.png" alt="图片描述"><br>
+此时，调用 HandlerMethodArgumentResolverComposite 包装的 <code>resolveArgument</code> 方法，真正执行的是:</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>ModelAttributeMethodProcessor.java#resolveArgument</code> 方法，Argument 解析注解 <code>@ModelAttribute("user")</code> 。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f293d300001700412470606.png" data-original="//img1.sycdn.imooc.com/5f293d300001700412470606.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">绑定的详细的流程如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f293d4a0001f68f13140496.png" data-original="//img1.sycdn.imooc.com/5f293d4a0001f68f13140496.png" alt="图片描述"><br>
+<strong>1.  初始化 HelloController 自定义的 PropertyEditor</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">InitBinderDataBinderFactory.java#initBinder ：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d1824000144cb06400397.jpg" data-original="//img1.sycdn.imooc.com/5f0d1824000144cb06400397.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 属性绑定</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ServletRequestDataBinder#bind ：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d183f00019bf006400357.jpg" data-original="//img1.sycdn.imooc.com/5f0d183f00019bf006400357.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最终使用 DataBinder#applyPropertyValues 来执行：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d197d0001d19006400321.png" data-original="//img1.sycdn.imooc.com/5f0d197d0001d19006400321.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">完整流程如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f293e200001d91c16000436.jpg" data-original="//img1.sycdn.imooc.com/5f293e200001d91c16000436.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="扩展" style="font-size: 30px;">扩展</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上面的 initBinder 针对的是单个 Controller，那么如何设置全局的 initBinder 呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以通过 <code>@ControllerAdvice</code> 注解来定义一个全局的 initBinder，使用 <code>@ControllerAdvice</code>，可以实现三个方面的功能：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">全局异常处理；</li>
+<li style="font-size: 20px; line-height: 38px;">全局数据绑定；</li>
+<li style="font-size: 20px; line-height: 38px;">全局数据预处理。</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如下所示：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d19ac0001454706060320.jpg" data-original="//img1.sycdn.imooc.com/5f0d19ac0001454706060320.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从上面的流程可以看出，整个流程的关键点是 ModelAttributeMethodProcessor.java#resolveArgument ，它处理请求的数据绑定和数据验证。</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">初始化，使用 WebDataBinderFactory 来创建 createBinder 一个 DataBinder;</li>
+<li style="font-size: 20px; line-height: 38px;">使用 DataBinder 将请求绑定到变量中;</li>
+<li style="font-size: 20px; line-height: 38px;">验证<code>@Valid</code> 定义的变量。</li>
+</ol>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2071">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            26 Spring Core 数据绑定之DataBinder实现示例及背后原理探究
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2042">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            28 百变星君Converter实现示例及背后原理探究
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

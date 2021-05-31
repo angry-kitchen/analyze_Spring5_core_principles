@@ -1,0 +1,215 @@
+<html><head><meta charset="utf-8"><title>10 扩展之Spring MVC中如何实现国际化i18n-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        10 扩展之Spring MVC中如何实现国际化i18n
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-04 12:05:51
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ece09d200013a8d06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">读书而不思考，等于吃饭而不消化。——波尔克<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring MVC 的国际化是建立在Java国际化的基础之上的，其一样也是通过提供不同国家语言环境的消息资源，然后通过 Resource Bundle 加载指定 Locale 对应的资源文件，再取得该资源文件中指定 key 对应的消息。这整个过程与 Java 程序的国际化完全相同，只是  Spring MVC 框架对 Java 程序国际化进行了进一步的封装，从而简化了应用程序的国际化。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf25070001537303990244.jpg" data-original="//img1.sycdn.imooc.com/5ecf25070001537303990244.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="在-spring-mvc-中-i18n-是如何实现的？" style="font-size: 30px;">在 Spring MVC 中 i18n 是如何实现的？</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 提供了 ResourceBundleMessageSource 来封装 ResourceBundle 来完成国际化，Spring  MVC 中需要实例化这个对象。</p>
+</div><div class="cl-preview-section"><h3 id="使用配置方式准备一个-spring-mvc-最简化项目">使用配置方式准备一个 spring-mvc 最简化项目</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1 创建maven项目，选择web项目</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf25390001beb006340571.jpg" data-original="//img1.sycdn.imooc.com/5ecf25390001beb006340571.jpg" alt="图片描述"><br>
+<strong>2 添加依赖</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf254b00015fa905120517.jpg" data-original="//img1.sycdn.imooc.com/5ecf254b00015fa905120517.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>3 修改或者添加配置文件</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">web.xml<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f28de6d0001024a05880527.png" data-original="//img1.sycdn.imooc.com/5f28de6d0001024a05880527.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">dispatcher-servlet.xml<br>
+<img class="" src="https://img1.sycdn.imooc.com/5ecf25770001ecb905660231.jpg" data-original="//img1.sycdn.imooc.com/5ecf25770001ecb905660231.jpg" alt="图片描述"><br>
+<strong>4 控制器 Controller</strong></p>
+</div><div class="cl-preview-section"><h3 id="spring-mvc-国际化实例：">spring mvc 国际化实例：</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1.创建 messages 开头的不同 locale 的属性文件</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Resources 目录下建立 locale 目录(名字任意取)，并创建 messages 开头的不同 locale 的属性文件</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf25a7000194a203000103.jpg" data-original="//img1.sycdn.imooc.com/5ecf25a7000194a203000103.jpg" alt="图片描述"><br>
+message-en.properties 文件内容：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><a href="http://app.name">app.name</a> = resource bundle test invoked by {0}</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">message-zh.properties 文件内容：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><a href="http://app.name">app.name</a> = \u5feb\u4e50\u5b66\u4e60 {0}</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">message-fr.properties 文件内容：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">app.name=test de regroupement de ressources invoqu par {0}</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2.配置 ResourceBundleMessageSource 的 bean 使之生效</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以通过 xml 或者 annotation 实现，在 spring mvc 中我们统一使用注解方式：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/13eabd97524b402090c2b42afbaf2c12" data-original="http://p1.pstatp.com/large/pgc-image/13eabd97524b402090c2b42afbaf2c12" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其中 basename 是指 locale 目录下 messages 开头的文件。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>3. 在 Controller 控制器加上解析 Locale 的请求响应程序：</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5edda6900001eb7404600153.jpg" data-original="//img1.sycdn.imooc.com/5edda6900001eb7404600153.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>4. 测试结果</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 postMan 发送请求，并查看响应结果。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">英文：使用Accept_Language 为 en，如下图所示：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf25d30001220506400344.jpg" data-original="//img1.sycdn.imooc.com/5ecf25d30001220506400344.jpg" alt="图片描述"><br>
+中文：使用Accept_Language 为 zh，如下图所示：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf25e80001026b06400377.jpg" data-original="//img1.sycdn.imooc.com/5ecf25e80001026b06400377.jpg" alt="图片描述"><br>
+法文：使用 Accept_Language 为 fr，如下图所示：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf260200016bc606400382.jpg" data-original="//img1.sycdn.imooc.com/5ecf260200016bc606400382.jpg" alt="图片描述"><br>
+从上面的简单实例我们可以看到，通过传递不同的报文头，我们可以获取不同语言的响应，如果将这些响应不是直接返回而是传递给到视图，然后渲染视图后展示出来就是 Spring MVC 的国际化  i18n 了。为了深入了解 Spring MVC 的国际化  i18n 背后的原理，我们就要深入程序 Debug 了。</p>
+</div><div class="cl-preview-section"><h2 id="工作原理" style="font-size: 30px;">工作原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring MVC 国际化 i18n 其实是分两步走的：在 ApplicationContext <strong>启动时</strong>初始化 MessageSource，然后读取用户的 locale，最后根据 locale 读取属性 properties 文件读取键值。</p>
+</div><div class="cl-preview-section"><h3 id="初始化-resource-bundlemessagesource">1. 初始化 Resource BundleMessageSource</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">web 容器启动时调用初始化  AbstractApplicationContext#initMessageSource：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf263c0001d8c606400405.jpg" data-original="//img1.sycdn.imooc.com/5ecf263c0001d8c606400405.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="根据-locale-解析键值">2. 根据 locale 解析键值</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最终调用 ResourceBundleMessageSource#resolveCode 来解读 locale 信息</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf265100018c9806040292.jpg" data-original="//img1.sycdn.imooc.com/5ecf265100018c9806040292.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="拓展" style="font-size: 30px;">拓展</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 spring mvc 的视图显示不同 locale 的数据，可以从 DispatcherServlet 追溯。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf2668000174d906050434.jpg" data-original="//img1.sycdn.imooc.com/5ecf2668000174d906050434.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="qa" style="font-size: 30px;">QA</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>QA1：</strong> 为什么我看到有的实例中的属性文件配置，有的使用诸如 __en.properties，有的使用  _.en_US.properties?</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其实在 java.util.Locale 的源码中，我们可以找到答案。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">locale 既定义了跟语言有关的常量：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf267f0001798a05980493.jpg" data-original="//img1.sycdn.imooc.com/5ecf267f0001798a05980493.jpg" alt="图片描述"><br>
+也定义了和区域相关的常量</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecf26b90001e93906380898.jpg" data-original="//img1.sycdn.imooc.com/5ecf26b90001e93906380898.jpg" alt="图片描述"><br>
+根据 RFC 4647 规则，查找是根据最优匹配原则，先语言后地区。故如果一个语言仅仅在一个地区有使用的话或者多个地区使用的语言习惯一致的话，只要标识语言就可以了；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果一个语言在多个地区使用，且使用的语言习惯有迥异，如汉字中的简体字和繁体字，那么就需要标明语言和地区了。</p>
+</div><div class="cl-preview-section"><h2 id="总结：" style="font-size: 30px;">总结：</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">本篇为了阐明 Spring MVC 国际化的原理，使用了一个最简单的实例，在 Spring MVC 具体应用上，不仅仅可以通过报文头 Header 改变 Locale 来实现国际化  i18n （默认方式是AcceptHeaderLocaleResolver，通过请求头来解析 Locale），还可以通过Session（SessionLocaleResolver）、cookie（CookieLocaleResolver）来改变 locale 来实现国际化。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2024">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            09 Spring IoC容器ApplicationContext如何实现国际化
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2025">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            11 spring IoC容器中事件event消息的发送和接收内部工作原理揭秘
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img1.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

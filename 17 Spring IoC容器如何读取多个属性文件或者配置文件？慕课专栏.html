@@ -1,0 +1,292 @@
+<html><head><meta charset="utf-8"><title>17 Spring IoC容器如何读取多个属性文件或者配置文件？-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        17 Spring IoC容器如何读取多个属性文件或者配置文件？
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-06-22 10:10:35
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5ece0aee00012d9006400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">什么是路？就是从没路的地方践踏出来的，从只有荆棘的地方开辟出来的。 —— 鲁迅<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Spring 项目中，你可能需要从 properties 文件中读入配置注入到 bean 中，例如数据库连接信息，redis server 的地址端口信息等，此时，Properties 配置文件不止一个，需要在系统启动时同时加载多个 Properties 文件，该如何做呢？</p>
+</div><div class="cl-preview-section"><h2 id="spring-加载多个属性文件" style="font-size: 30px;">Spring 加载多个属性文件</h2>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">Spring 老版本 XML 配置方式：</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 applicationContext.xml 使用 context:property-placeholder/，注意，需要增加命名空间：xmlns:context=“<a href="http://www.springframework.org/schema/context">http://www.springframework.org/schema/context</a>”</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">示例：</p>
+</div><div class="cl-preview-section"><pre class=" language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">context:</span>property-placeholder</span> <span class="token attr-name">location</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>classpath:foo.properties, classpath:bar.properties<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">或者在 applicationContext.xml 使用util:properties，注意，需要用到命名空间：xmlns:util=“<a href="http://www.springframework.org/schema/util">http://www.springframework.org/schema/util</a>” 和 schema：<a href="http://www.springframework.org/schema/util">http://www.springframework.org/schema/util</a>  <a href="http://www.springframework.org/schema/util/spring-util-3.0.xsd">http://www.springframework.org/schema/util/spring-util-3.0.xsd</a></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">示例：</p>
+</div><div class="cl-preview-section"><pre class=" language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">util:</span>properties</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fileA<span class="token punctuation">"</span></span> <span class="token attr-name">location</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>classpath:META-INF/properties/a.properties<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">util:</span>properties</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fileB<span class="token punctuation">"</span></span> <span class="token attr-name">location</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>classpath:META-INF/properties/b.properties<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">然后使用方式如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java">	<span class="token annotation punctuation">@Resource</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"fileA"</span><span class="token punctuation">)</span> 
+	<span class="token keyword">private</span> Properties propertyA<span class="token punctuation">;</span>
+	
+	<span class="token annotation punctuation">@Resource</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"fileB"</span><span class="token punctuation">)</span> 
+	<span class="token keyword">private</span> Properties propertyB<span class="token punctuation">;</span>
+</code></pre>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">spring4.x 以上版本，使用注解或者配置。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注解方式，spring boot 同样适用：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PropertySources</span><span class="token punctuation">(</span> <span class="token punctuation">{</span>
+	<span class="token annotation punctuation">@PropertySource</span><span class="token punctuation">(</span><span class="token string">"classpath:config001.properties"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token annotation punctuation">@PropertySource</span><span class="token punctuation">(</span><span class="token string">"classpath:config002.properties"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">也可采用配置方式：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> PropertySourcesPlaceholderConfigurer <span class="token function">propertySourcesPlaceholderConfigurer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span>
+	PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer 
+											<span class="token operator">=</span>  <span class="token keyword">new</span> <span class="token class-name">PropertySourcesPlaceholderConfigurer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+	Resource<span class="token punctuation">[</span><span class="token punctuation">]</span> resources <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassPathResource</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span>
+				<span class="token keyword">new</span> <span class="token class-name">ClassPathResource</span><span class="token punctuation">(</span><span class="token string">"app.properties"</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+	propertySourcesPlaceholderConfigurer<span class="token punctuation">.</span><span class="token function">setLocations</span><span class="token punctuation">(</span>resources<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+	propertySourcesPlaceholderConfigurer<span class="token punctuation">.</span><span class="token function">setIgnoreUnresolvablePlaceholders</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> propertySourcesPlaceholderConfigurer<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1.</strong> 使用 XML 文件属性<code>&lt;property-placeholder&gt;</code>定义属性文件时，如果用 <strong>@Value</strong> 注解时</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">若属性文件定义在父上下文时：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 不能在子上下文中获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 可以从父上下文获取到值。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">若属性文件定义在子上下文：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 可以在子上下文中获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 不能从父上下文获取到值。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">不能使用 environment.getProperty 从上下文获取到值，原因：<code>&lt;property-placeholder&gt;</code>不对 Enviroment 暴漏属性。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2.</strong> 使用 @PropertySource 注解定义属性文件时，</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">若属性文件定义在父上下文时:</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 可以从子上下文获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 可以从父上下文获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">可以使用 environment.getProperty 在子上下文中获取到属性值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">可以使用 environment.getProperty 在父上下文中获取到属性值。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">若属性文件定义在子上下文：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 可以从子上下文获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">@Value 不能从父上下文获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">可以使用 environment.getProperty 从子上下文获取到值；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">不能使用 environment.getProperty 从父上下文获取到值。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="spring-读取多个属性文件的原理" style="font-size: 30px;">Spring 读取多个属性文件的原理</h2>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><code>&lt;context:property-placeholder/&gt;</code>深入原理。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;context:property-placeholder/&gt;</code> 由 PropertyPlaceholderBeanDefinitionParser 类来解读：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/6be226aa263740d5aa9ce6d2edb27e7d" data-original="http://p1.pstatp.com/large/pgc-image/6be226aa263740d5aa9ce6d2edb27e7d" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">解析 location 在 doParse 方法：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p3.pstatp.com/large/pgc-image/fcabed28689c4a778077d9cb0038df04" data-original="http://p3.pstatp.com/large/pgc-image/fcabed28689c4a778077d9cb0038df04" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">加载多个属性文件使用 PropertyResourceConfigurer#postProcessBeanFactory ：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/17cc25709bbe4183933b2bea6a6096e9" data-original="http://p1.pstatp.com/large/pgc-image/17cc25709bbe4183933b2bea6a6096e9" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最后调用 PropertiesLoaderUtils.fillProperties() 方法，支持 XML 和属性文件：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5eec210c0001056d07910548.png" data-original="//img1.sycdn.imooc.com/5eec210c0001056d07910548.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><code>&lt;util:properties&gt;</code> 深入原理。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">UtilNamespaceHandler 解析<code>&lt;util&gt;</code>标签，包含多个子标签：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p9.pstatp.com/large/pgc-image/d21b630a692e4bfa8b9f174db0a152d0" data-original="http://p9.pstatp.com/large/pgc-image/d21b630a692e4bfa8b9f174db0a152d0" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>&lt;util：properties&gt;</code> 的解析则调用 UtilNamespaceHandler 解析，使用 PropertiesFactoryBean 来将 classpath 下的属性文件加载到内存中，多个文件都加载时会进行 merge 处理。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/58a66d24bf384e938ab8ad064e43fcd3" data-original="http://p1.pstatp.com/large/pgc-image/58a66d24bf384e938ab8ad064e43fcd3" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最后 PropertiesFactoryBean 调用 PropertiesLoaderUtils.fillProperties() 方法，支持 XML 和属性文件.</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">PropertySource 注解深入原理。<br>
+从 spring4.3 开始，使用 PropertySourceFactory 的工厂方法来加载属性文件：</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5eec20ba00017e5f06760860.png" data-original="//img1.sycdn.imooc.com/5eec20ba00017e5f06760860.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">PropertySourceFactory 的默认实现 DefaultPropertySourceFactory 使用 ResourcePropertySource 将属性文件资源化。</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token comment">/**
+The default implementation for {@link PropertySourceFactory},   
+wrapping every resource in a {@link ResourcePropertySource}.   
+@author Juergen Hoeller 
+@since 4.3  
+@see PropertySourceFactory 
+@see ResourcePropertySource  */</span>  
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DefaultPropertySourceFactory</span> <span class="token keyword">implements</span> <span class="token class-name">PropertySourceFactory</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> PropertySource<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> <span class="token function">createPropertySource</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Nullable</span> String name<span class="token punctuation">,</span> EncodedResource resource<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>  
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>name <span class="token operator">!=</span> null <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">ResourcePropertySource</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> resource<span class="token punctuation">)</span> <span class="token operator">:</span> 
+											<span class="token keyword">new</span> <span class="token class-name">ResourcePropertySource</span><span class="token punctuation">(</span>resource<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最后调用 PropertiesLoaderUtils.fillProperties() 方法 来加载资源。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过阅读代码发现，不管何种形式支持多个属性文件的读取，实现的代码是一致的，都是调用 PropertiesLoaderUtils.fillProperties() 方法来加载资源，底层的实现都是 Properties 的 load() 方法。</p>
+</div><div class="cl-preview-section"><h2 id="扩展：spring-mvc-中如何加载多个-xml-文件" style="font-size: 30px;">扩展：Spring MVC 中如何加载多个 XML 文件</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">方式一：使用<strong>contextConfigLocation</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/1eb4a36e048244df826771ff1c032146" data-original="http://p1.pstatp.com/large/pgc-image/1eb4a36e048244df826771ff1c032146" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">方式二：使用 import 注解。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p3.pstatp.com/large/pgc-image/90e9f7c6d0504cf89d65af515d86bc19" data-original="http://p3.pstatp.com/large/pgc-image/90e9f7c6d0504cf89d65af515d86bc19" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">参考 ResourceUtils，具体大家可以自己尝试分析。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2030">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            16 Resource的前生今世
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2069">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            18 Spring IoC容器如何读取应用外部的xml，txt，图形或者属性文件？
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img1.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

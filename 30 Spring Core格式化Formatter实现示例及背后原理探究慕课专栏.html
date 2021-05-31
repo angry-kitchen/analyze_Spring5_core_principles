@@ -1,0 +1,191 @@
+<html><head><meta charset="utf-8"><title>30 Spring Core格式化Formatter实现示例及背后原理探究-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        30 Spring Core格式化Formatter实现示例及背后原理探究
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-06 13:41:43
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ecf1a060001c05e06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">机会不会上门来找人，只有人去找机会。——狄更斯<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有些数据需要格式化，比如说金额、日期等。传递的日期格式为 <code>yyyy-MM-dd</code> 或者 <code>yyyy-MM-dd hh:ss:mm</code>，这些是需要格式化的，对于金额也是如此， 比如，1 万元人民币，在正式场合往往要定写作￥10000.00，这些都要求把字符串按照一定的格式转换为日期或者金额。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了对这些场景做出支持，Spring Context 提供了相关的 Formatter。这样就能满足我们对格式化数据的需求 了，它的内部实际是委托给 Converter 机制去实现的，我们需要定义的场合并不多，所以这里以学习用法为主。日期格式化器在 Spring MVC 中是由系统在启动时完成初始化的，所以并不需要进行干预，同时还提供注解 @DateTimeFormat 来进行日期格式的定义， 而采用注解 @NumberFormat 来进行数字的格式转换。这两个注解都有 pattern 属性，可以定义其格式，例如：<code>@DateTimeFormat(pattern="yyyy-MM-dd")</code> 和 <code>@NumberFormat(pattern="###,###.###")</code> 。</p>
+</div><div class="cl-preview-section"><h2 id="深入原理" style="font-size: 30px;">深入原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们先从源码包来看：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d273e0001876504380162.jpg" data-original="//img1.sycdn.imooc.com/5f0d273e0001876504380162.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 提供了丰富的 Formatter 实现，这些实现分布在如下包中：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">org.springframework.format.<strong>datetime</strong>：提供了 <strong>java.util.Date</strong> 类型转换的 formatter；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">org.springframework.format.<strong>datetime.joda</strong>：提供了 <strong>Joda 日期和时间</strong>类型转换 formatter；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">org.springframework.format.<strong>datetime.standard</strong>：提供 <strong>JSR-310 Java 8 java.time</strong> 类型转换的 formatter；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">org.springframework.format.<strong>number</strong>：提供了 <strong>java.lang.Number 子类型</strong>的类型转换 formatters；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">org.springframework.format.<strong>number.money</strong>：提供了 <strong>JSR 354 javax.money</strong> 的类型转换 formatters。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="实例验证" style="font-size: 30px;">实例验证</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">DefaultFormattingConversionService 实现了 FormattingConversionService，它内部包含了 Formatter 的各种默认实现。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d27530001869105610184.jpg" data-original="//img1.sycdn.imooc.com/5f0d27530001869105610184.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们通过程序来打印出 DefaultFormattingConversionService 的默认 Formatter 实现，输出结果为：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2b981200015c8a11000815.png" data-original="//img1.sycdn.imooc.com/5f2b981200015c8a11000815.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">既然 DefaultFormattingConversionService 包含了如此多的 Formatter，我们就来练练手，使用一下吧：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d27780001aa3605830506.jpg" data-original="//img1.sycdn.imooc.com/5f0d27780001aa3605830506.jpg" alt="图片描述"><br>
+第一步：打印出 DefaultFormattingConversionService 包含的默认 Formatter 实现；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">第二步：利用 DefaultFormattingConversionService 将 Calendar 转换为 Date 类型。</p>
+</div><div class="cl-preview-section"><img class="" src="https://img1.sycdn.imooc.com/5f0d278d0001133e02690695.jpg" data-original="//img1.sycdn.imooc.com/5f0d278d0001133e02690695.jpg" width="150">
+</div><div class="cl-preview-section"><h2 id="深入-formatter-原理" style="font-size: 30px;">深入 Formatter 原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">debug 进去，发现代码执行如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d27b90001e42808790271.jpg" data-original="//img1.sycdn.imooc.com/5f0d27b90001e42808790271.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">重点 GenericConversionService#getConverter，converterCache 是一个 ConcurrentReferenceHashMap 结构，缓存了众多的 Converter，getConverter 根据输入数据类型和输出数据类型确定合适的 Converter。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d27dd0001204906400464.jpg" data-original="//img1.sycdn.imooc.com/5f0d27dd0001204906400464.jpg" alt="图片描述"><br>
+如何自定义格式转换的 Formatter 呢？只要实现 Formatter 接口即可。Formatter 主要是两个方法，通过 print 方法能将结果按照一定的格式输出字符串。通过 parse 方法能够将满足一定格式的字符串转换为对象。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d27ec0001970905620608.jpg" data-original="//img1.sycdn.imooc.com/5f0d27ec0001970905620608.jpg" alt="图片描述"><br>
+然后注册到相应的 ConversionService 中，以 DefaultFormattingConversionService，可以修改源码如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d27fd00019e9a06400398.jpg" data-original="//img1.sycdn.imooc.com/5f0d27fd00019e9a06400398.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Converter 和 Formatter 看上去差别不大，但其实作用是不同的，Converter 更强调从一种类型转换为另外一种类型，Formatter 更注重不同的展现形式，如传递的日期格式为 <code>yyyy-MM-dd</code> 或者 <code>yyyy-MM-dd hh:ss:mm</code>， 这些是需要格式化的。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2043">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            29 Spring MVC之类型转换Converter
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2045">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            31 Converter还是Formatter？
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

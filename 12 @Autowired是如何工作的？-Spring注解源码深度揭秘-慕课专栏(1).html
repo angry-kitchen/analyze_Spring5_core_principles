@@ -1,0 +1,366 @@
+<html><head><meta charset="utf-8"><title>12 @Autowired是如何工作的？--Spring注解源码深度揭秘-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        12 @Autowired是如何工作的？--Spring注解源码深度揭秘
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-04 13:40:15
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img3.sycdn.imooc.com/5ece0a0b0001af5306400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">人生的价值，并不是用时间，而是用深度去衡量的。——列夫·托尔斯泰<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注解可以减少代码的开发量，Spring 提供了丰富的注解功能。我们可能会被问到，Spring 的注解到底是怎么触发的呢？今天以 Spring 最常使用的一个注解 Autowired 来跟踪代码，进行 debug。</p>
+</div><div class="cl-preview-section"><h2 id="autowired-的定义及作用" style="font-size: 30px;">Autowired 的定义及作用</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">作用：Marks a constructor, field, setter method or config method as to be autowired by Spring’s dependency injection facilities.</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">定义：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>CONSTRUCTOR<span class="token punctuation">,</span> ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span> ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">,</span> ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">}</span><span class="token punctuation">)</span>  
+ <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>  
+ <span class="token annotation punctuation">@Documented</span>  
+ <span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Autowired</span> <span class="token punctuation">{</span>  
+  <span class="token comment">/**  
+  * Declares whether the annotated dependency is required.  
+  * &lt;p&gt;Defaults to {@code true}.  
+  */</span>  
+  <span class="token keyword">boolean</span> <span class="token function">required</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><h3 id="target">@Target</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Target 起到什么作用呢？我们来看 jdk 的说明：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Indicates the kinds of program element to which an annotation type is applicable. If a Target meta-annotation is not present on an annotation type declaration, the declared type may be used on any program element. If such a meta-annotation is present, the compiler will enforce the specified usage restriction.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Target 限定注解可应用于的程序元素的类型。如果目标元注解没有出现在注解类型声明中，则声明的类型可以在任何程序元素上使用。如果存在这样的元注释，编译器将强制执行指定的使用限制。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其次，@Target 定义：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token annotation punctuation">@Documented</span>  
+ <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>  
+ <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>  
+ <span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Target</span> <span class="token punctuation">{</span>  
+  ElementType<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注解表明适用于哪种程序元素，程序元素有以下几种：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token keyword">public</span> <span class="token keyword">enum</span> ElementType <span class="token punctuation">{</span>  
+  <span class="token comment">/** Class, interface (including annotation type), or enum declaration */</span>  
+  TYPE<span class="token punctuation">,</span>  
+  <span class="token comment">/** Field declaration (includes enum constants) */</span>  
+  FIELD<span class="token punctuation">,</span>  
+  <span class="token comment">/** Method declaration */</span>  
+  METHOD<span class="token punctuation">,</span>  
+  <span class="token comment">/** Parameter declaration */</span>  
+  PARAMETER<span class="token punctuation">,</span>  
+  <span class="token comment">/** Constructor declaration */</span>  
+  CONSTRUCTOR<span class="token punctuation">,</span>  
+  <span class="token comment">/** Local variable declaration */</span>  
+  LOCAL_VARIABLE<span class="token punctuation">,</span>  
+  <span class="token comment">/** Annotation type declaration */</span>  
+  ANNOTATION_TYPE<span class="token punctuation">,</span>  
+  <span class="token comment">/** Package declaration */</span>  
+  PACKAGE  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最后，Target 使用方式：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>@Target(value={ANNOTATION_TYPE})</code></p>
+</div><div class="cl-preview-section"><h3 id="retention">@Retention</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">官方说明：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Indicates how long annotations with the annotated type are to be retained. If no Retention annotation is present on an annotation type declaration, the retention policy defaults to RetentionPolicy.CLASS</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单的说就是作用域。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">然后我们看其定义：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token annotation punctuation">@Documented</span>  
+ <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>  
+ <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>  
+ <span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Retention</span> <span class="token punctuation">{</span>  
+  RetentionPolicy <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">RetentionPolicy 作用域定义：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token keyword">public</span> <span class="token keyword">enum</span> RetentionPolicy <span class="token punctuation">{</span>  
+  <span class="token comment">/**  
+  * Annotations are to be discarded by the compiler.  
+  */</span>  
+  SOURCE<span class="token punctuation">,</span>  
+  <span class="token comment">/**  
+  * Annotations are to be recorded in the class file by the compiler  
+  * but need not be retained by the VM at run time. This is the default  
+  * behavior.  
+  */</span>  
+  CLASS<span class="token punctuation">,</span>  
+  <span class="token comment">/**  
+  * Annotations are to be recorded in the class file by the compiler and  
+  * retained by the VM at run time, so they may be read reflectively.  
+  *  
+  * @see java.lang.reflect.AnnotatedElement  
+  */</span>  
+  RUNTIME  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最后，使用方式：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>@Retention(value=RetentionPolicy )</code></p>
+</div><div class="cl-preview-section"><h3 id="documented">@Documented</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">官方说明：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">Indicates that annotations with a type are to be documented by javadoc and similar tools by default. This type should be used to annotate the declarations of types whose annotations affect the use of annotated elements by their clients. If a type declaration is annotated with Documented, its annotations become part of the public API of the annotated elements.</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单的说，可以成为 API 的一部分。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">定义:</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token annotation punctuation">@Documented</span>  
+ <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>  
+ <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>  
+ <span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Documented</span> <span class="token punctuation">{</span>  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用方式：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Documented</p>
+</div><div class="cl-preview-section"><h2 id="注解实现类-autowiredannotationbeanpostprocessor-的注册" style="font-size: 30px;">注解实现类 AutowiredAnnotationBeanPostProcessor 的注册</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">它的注册方式有两种：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一种使用 xml 配置文件方式，即<code>&lt;context:annotation-config/&gt;</code>，它通过 AnnotationConfigBeanDefinitionParser 解析器来将 AutowiredAnnotationBeanPostProcessor 注册到容器中，后面讨论@Resource 注解会详细论述。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">一种是使用 AnnotationConfigWebApplicationContext 容器来启动应用，通过 AnnotatedBeanDefinitionReader 将 AutowiredAnnotationBeanPostProcessor 注册到容器中。它的注册过程如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="http://p1.pstatp.com/large/pgc-image/81fba39db924461192bb9dfb0185296f" data-original="http://p1.pstatp.com/large/pgc-image/81fba39db924461192bb9dfb0185296f" alt="img"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注册的注解相关处理器代码如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token comment">/**  
+* Register all relevant annotation post processors in the given registry.  
+* @param registry the registry to operate on  
+* @param source the configuration source element (already extracted)  
+* that this registration was triggered from. May be {@code null}.  
+* @return a Set of BeanDefinitionHolders, containing all bean definitions  
+* that have actually been registered by this call  
+*/</span>  
+<span class="token keyword">public</span> <span class="token keyword">static</span> Set<span class="token operator">&lt;</span>BeanDefinitionHolder<span class="token operator">&gt;</span> <span class="token function">registerAnnotationConfigProcessors</span><span class="token punctuation">(</span>  
+BeanDefinitionRegistry registry<span class="token punctuation">,</span> Object source<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    DefaultListableBeanFactory beanFactory <span class="token operator">=</span> <span class="token function">unwrapDefaultListableBeanFactory</span><span class="token punctuation">(</span>registry<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>beanFactory <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>beanFactory<span class="token punctuation">.</span><span class="token function">getDependencyComparator</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">instanceof</span> <span class="token class-name">AnnotationAwareOrderComparator</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     beanFactory<span class="token punctuation">.</span><span class="token function">setDependencyComparator</span><span class="token punctuation">(</span>AnnotationAwareOrderComparator<span class="token punctuation">.</span>INSTANCE<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     <span class="token punctuation">}</span>  
+     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>beanFactory<span class="token punctuation">.</span><span class="token function">getAutowireCandidateResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">instanceof</span>  <span class="token class-name">ContextAnnotationAutowireCandidateResolver</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     beanFactory<span class="token punctuation">.</span><span class="token function">setAutowireCandidateResolver</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ContextAnnotationAutowireCandidateResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     <span class="token punctuation">}</span>  
+    <span class="token punctuation">}</span>  
+    Set<span class="token operator">&lt;</span>BeanDefinitionHolder<span class="token operator">&gt;</span> beanDefs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashSet</span><span class="token operator">&lt;</span>BeanDefinitionHolder<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>registry<span class="token punctuation">.</span><span class="token function">containsBeanDefinition</span><span class="token punctuation">(</span>CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     RootBeanDefinition def <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootBeanDefinition</span><span class="token punctuation">(</span>ConfigurationClassPostProcessor<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     def<span class="token punctuation">.</span><span class="token function">setSource</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     beanDefs<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token function">registerPostProcessor</span><span class="token punctuation">(</span>registry<span class="token punctuation">,</span> def<span class="token punctuation">,</span> CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>registry<span class="token punctuation">.</span><span class="token function">containsBeanDefinition</span><span class="token punctuation">(</span>AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     RootBeanDefinition def <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootBeanDefinition</span><span class="token punctuation">(</span>AutowiredAnnotationBeanPostProcessor<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     def<span class="token punctuation">.</span><span class="token function">setSource</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     beanDefs<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token function">registerPostProcessor</span><span class="token punctuation">(</span>registry<span class="token punctuation">,</span> def<span class="token punctuation">,</span> AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>registry<span class="token punctuation">.</span><span class="token function">containsBeanDefinition</span><span class="token punctuation">(</span>REQUIRED_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     RootBeanDefinition def <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootBeanDefinition</span><span class="token punctuation">(</span>RequiredAnnotationBeanPostProcessor<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     def<span class="token punctuation">.</span><span class="token function">setSource</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     beanDefs<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token function">registerPostProcessor</span><span class="token punctuation">(</span>registry<span class="token punctuation">,</span> def<span class="token punctuation">,</span> REQUIRED_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+    <span class="token comment">// Check for JSR-250 support, and if present add the CommonAnnotationBeanPostProcessor.  </span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>jsr250Present <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>registry<span class="token punctuation">.</span><span class="token function">containsBeanDefinition</span><span class="token punctuation">(</span>COMMON_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     RootBeanDefinition def <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootBeanDefinition</span><span class="token punctuation">(</span>CommonAnnotationBeanPostProcessor<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     def<span class="token punctuation">.</span><span class="token function">setSource</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     beanDefs<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token function">registerPostProcessor</span><span class="token punctuation">(</span>registry<span class="token punctuation">,</span> def<span class="token punctuation">,</span> COMMON_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+    <span class="token comment">// Check for JPA support, and if present add the PersistenceAnnotationBeanPostProcessor.  </span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>jpaPresent <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>registry<span class="token punctuation">.</span><span class="token function">containsBeanDefinition</span><span class="token punctuation">(</span>PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     RootBeanDefinition def <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootBeanDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>  
+           def<span class="token punctuation">.</span><span class="token function">setBeanClass</span><span class="token punctuation">(</span>ClassUtils<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME<span class="token punctuation">,</span>  
+           AnnotationConfigUtils<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+     <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+     <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalStateException</span><span class="token punctuation">(</span>  
+ <span class="token string">"Cannot load optional framework class: "</span> <span class="token operator">+</span> PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME<span class="token punctuation">,</span> ex<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     <span class="token punctuation">}</span>  
+     def<span class="token punctuation">.</span><span class="token function">setSource</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     beanDefs<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token function">registerPostProcessor</span><span class="token punctuation">(</span>registry<span class="token punctuation">,</span> def<span class="token punctuation">,</span> PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+    <span class="token keyword">return</span> beanDefs<span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过代码，我们可以看到注册的注解处理器有：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.context.annotation.internalConfigurationAnnotationProcessor 对应于 ConfigurationClassPostProcessor；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.context.annotation.internalAutowiredAnnotationProcessor 对应于 AutowiredAnnotationBeanPostProcessor；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.context.annotation.internalRequiredAnnotationProcessor 对应于 RequiredAnnotationBeanPostProcessor；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.context.annotation.internalCommonAnnotationProcessor 对应于 CommonAnnotationBeanPostProcessor；</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">org.springframework.context.annotation.internalPersistenceAnnotationProcessor 对应于 PersistenceAnnotationBeanPostProcessor；</p>
+</div><div class="cl-preview-section"><h2 id="注解实现类-autowiredannotationbeanpostprocessor-使用" style="font-size: 30px;">注解实现类 AutowiredAnnotationBeanPostProcessor 使用</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">@Autowired 注解，定义了两种主要的注入类型：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. 基于构造方法注入</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其调用链如下：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#createBean()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#doCreateBean()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#createBeanInstance()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#determineConstructorsFromBeanPostProcessors()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AutowiredAnnotationBeanPostProcessor#determineConstructorsFromBeanPostProcessors()</p>
+</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 基于成员变量自动注入</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其调用链如下：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#createBean()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#doCreateBean()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AbstractAutowireCapableBeanFactory#populateBean()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">InjectionMetadata#inject()</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">AutowiredFieldElement#inject()/AutowiredMethodElement#inject()</p>
+</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="小结" style="font-size: 30px;">小结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 框架从创建伊始就致力于为复杂问题提供强大的、非侵入性的解决方案。开始时 Spring 使用 XML 配置文件数量引入定制命名空间功能。从 Spring 2.5 推出了一整套注解，作为基于 XML 的配置的可选方案。注解可用于 Spring 管理对象的自动发现、依赖注入、生命周期方法、Web 层配置和单元/集成测试。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 注解确实提高了开发效率，但一直以来，很多开发者对 Spring 注解的工作原理都处于一知半解的状态，使用注解过程中碰到问题，也是通过搜索或者多次尝试的方式来验证，为了更好的工作，还是要把 how Spring annotation works 这件事做起来。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2025">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            11 spring IoC容器中事件event消息的发送和接收内部工作原理揭秘
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2027">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            13 我的人生我做主揭秘Bean的生命周期
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img3.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

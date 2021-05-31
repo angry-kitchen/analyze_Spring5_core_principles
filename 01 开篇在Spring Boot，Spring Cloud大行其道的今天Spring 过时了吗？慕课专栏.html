@@ -1,0 +1,194 @@
+<html><head><meta charset="utf-8"><title>01 开篇：在Spring Boot，Spring Cloud大行其道的今天Spring 过时了吗？-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        01 开篇：在Spring Boot，Spring Cloud大行其道的今天Spring 过时了吗？
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-10 14:49:06
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img1.sycdn.imooc.com/5ecf2aa60001cadb09950664.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">立志是事业的大门，工作是登堂入室的旅程。——巴斯德<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>面试官：</strong> 能介绍一下 Spring Bean 的生命周期吗？</p>
+<p style="font-size: 20px; line-height: 38px;"><strong>面试者:</strong> 你们还在使用 Spring 吗？现在没有人在用那么老的东西了，都在用 Spring Boot，Spring Cloud 或者 Dubbo。</p>
+<p style="font-size: 20px; line-height: 38px;"><strong>面试官：</strong> 虽然我们也使用 Spring Boot，Spring Cloud 的框架，但 Spring 的掌握必不可少啊，Spring 是基础嘛。</p>
+<p style="font-size: 20px; line-height: 38px;"><strong>面试者：</strong> 使用 Spring 都是老家伙了吧？出去找工作都没有问这些问题。</p>
+<p style="font-size: 20px; line-height: 38px;"><strong>面试官：</strong>？？？？？？？！！！！</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde4760001f2b502550255.jpg" data-original="//img1.sycdn.imooc.com/5ecde4760001f2b502550255.jpg" alt="图片描述"><br>
+随着入行的年头增加，时不时的在编码时被 HR 拉过去充当面试官去面试一些同行，面试的细节就不赘述了。有一点印象特别深刻，随着小伙伴们的年龄越来越年轻化，越来越多的人认为 Spring 已经成为过时的技术，更摧心的是我也成为别人眼中的老家伙了，技术落后了。而这恰恰是我年轻时一直害怕的，进入 IT 这行，我经常督促自己，一直要追踪最新的技术潮流，防止自己变成一个抱着陈旧技术啃的老家伙。Spring 真的过时了吗？Spring Boot 真的踩着 Spring 的尸骨迈上王者之位吗？很多人看到的情况是这样的：</p>
+</div><div class="cl-preview-section"><h4 id="jvm-生态系统-2018-调查报道（来自网络）" style="font-size: 26px;">JVM 生态系统 2018 调查报道（来自网络）</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有 40% 的受访者选择了 Spring Boot 框架，有 36% 的开发者选择了 Spring MVC，两者使用率相差不大。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde47f0001e84806400275.jpg" data-original="//img1.sycdn.imooc.com/5ecde47f0001e84806400275.jpg" alt="图片描述"><br>
+​</p>
+</div><div class="cl-preview-section"><center>JVM 生态系统 2018 报告（来自网络）</center>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">​</p>
+</div><div class="cl-preview-section"><h4 id="jvm-生态系统-2020-报告（来自网络）" style="font-size: 26px;">JVM 生态系统 2020 报告（来自网络）</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">到 2020 年时 Spring Boot 已经远远超过 Spring MVC，奠定王者之基。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde4850001fc1406400588.jpg" data-original="//img1.sycdn.imooc.com/5ecde4850001fc1406400588.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><center>JVM 生态系统 2020 报告（来自网络）</center>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">​</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从表面上来，Spring 确实是在走下坡路，但真的是这样的吗？我们深入来研究一下。</p>
+</div><div class="cl-preview-section"><h2 id="spring-是-spring-boot，spring-cloud-的基石" style="font-size: 30px;">Spring 是 Spring Boot，Spring Cloud 的基石</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们来看看 Spring 官方给 Spring，Spring Boot，Spring Cloud 的定位：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">​<img class="" src="https://img1.sycdn.imooc.com/5ecde48d000147cd10800665.jpg" data-original="//img1.sycdn.imooc.com/5ecde48d000147cd10800665.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring:the source for modern java</strong></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring 框架是 Spring 的基石，Spring 框架为开发 Java 应用程序提供了全面的基础架构支持。它包含一些很好的功能，如依赖注入和开箱即用的模块，如：Spring JDBC 、Spring MVC 、Spring Security、 Spring AOP 、Spring ORM 、Spring Test，这些模块缩短应用程序的开发时间，提高了应用开发的效率。</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring Boot — Build anything</strong></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring Boot 基本上是 Spring 框架的扩展，它消除了设置 Spring 应用程序所需的 XML 配置，为更快，更高效的开发生态系统铺平了道路。</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring Cloud — Coordinate anything</strong></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring Cloud 是一系列框架的有序集合。它利用 Spring Boot 的开发便利性巧妙地简化了分布式系统基础设施的开发，如服务发现注册、配置中心、消息总线、负载均衡、断路器、数据监控等，都可以用 Spring Boot 的开发风格做到一键启动和部署。Spring Cloud 并没有重复制造轮子，它只是将各家公司开发的比较成熟、经得起实际考验的服务框架组合起来，通过 Spring Boot 风格进行再封装屏蔽掉了复杂的配置和实现原理，最终给开发者留出了一套简单易懂、易部署和易维护的分布式系统开发工具包。</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;"><strong>Spring Cloud Data Flow— Connect Everything</strong></li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Spring Data flow 是一个用于开发和执行大范围数据处理其模式包括 ETL，批量运算和持续运算的统一编程模型和托管服务。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从官方的定位来看，我们所说的 Spring 框架（Framework）是学好 Spring boot，Spring cloud 甚至 Java 的底层基础（the source for modern java）。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有人可能认为，既然是底层，应该比较稳定，很少变化，这样想可就错了，Spring 可是代表先进生产力要求，一直在与时俱进的走在时代的前列。</p>
+</div><div class="cl-preview-section"><h2 id="spring-与时俱进" style="font-size: 30px;">Spring 与时俱进</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>最新的提交</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从 Github上的 comit 来看，Spring Framework 的提交异常活跃，社区反馈又很给力。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde4930001dc0106400323.jpg" data-original="//img1.sycdn.imooc.com/5ecde4930001dc0106400323.jpg" alt="图片描述"><br>
+<strong>使用的 Spring 版本</strong>(来自网络)</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从使用版本来看，超过六成的人使用的是最新版本 5.x。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde49900016d6906400250.jpg" data-original="//img1.sycdn.imooc.com/5ecde49900016d6906400250.jpg" alt="图片描述"><br>
+<strong>Spring 需求</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">从招聘的角度来看，高级的职位对 Spring 有深入的需求。某聘网站搜索 Java 高级工程师职位：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecde5180001b14706400358.jpg" data-original="//img1.sycdn.imooc.com/5ecde5180001b14706400358.jpg" alt="图片描述"><br>
+从上面的损招聘中可以看出来，如果去应聘 Java 开发工程师的岗位，无论是初级开发师，还是有一定经验的中高级开发师，多多少少需要掌握 Spring 框架技术。想要进阶更高级别或者拿到更高的薪水，更需要深入了解它，以便更好地适应企业的开发需求，同时提升自我价值。</p>
+</div><div class="cl-preview-section"><h1 id="总结">总结</h1>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 Spring Boot 可以简化 Spring 的配置，开发起来更加快捷方便，<strong>为什么要学 Spring 框架，放着简单的东西不用，非要去用复杂的东西呢？</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">任何事情都有两面性，Spring Boot 屏蔽了底层操作的同时也屏蔽掉了你对于底层原理的理解和学习，一旦遇到较为复杂的问题，一定是一脸懵逼。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">就好比一个赛车爱好者，如果连汽车的结构都不了解，只会开车，又怎么能完成车辆的性能优化和改装呢，因此，<strong>不但要驾驶技术一流，还要懂得赛车的内部原理，才能成为真正的老司机。</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>故想要学好 Spring Boot 或者 Spring Cloud 等框架，不学好 Spring，相当于缘木求鱼，想要学好，用好 Spring Boot 或者 Spring Cloud，那么 Spring 框架的深入就必不可少！</strong></p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2013">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            02 为什么要深入Spring5的核心原理或者源码？
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img1.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

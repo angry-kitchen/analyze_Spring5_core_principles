@@ -1,0 +1,263 @@
+<html><head><meta charset="utf-8"><title>08 青出于蓝而胜于蓝之揭秘Spring容器ApplicationContext-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        08 青出于蓝而胜于蓝之揭秘Spring容器ApplicationContext
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-10 14:44:01
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5ece097d0001becc06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">才能一旦让懒惰支配，它就一无可为。——克雷洛夫<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">青，取之于蓝，而青于蓝；冰，水为之，而寒于水。木直中绳，輮以为轮，其曲中规。虽有槁暴，不复挺者，輮使之然也。故木受绳则直，金就砺则利，君子博学而日参省乎已，则知明而行无过矣。-----《荀子·劝学》</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">用过 Spring 的童鞋都知道，BeanFactory 是 Spring 最重要的最简单的 Bean 容器，但是由于 BeanFactory 的功能有些简单，所以它并不适合实际应用的企业级开发，因此，Spring 提供了另外的一套 Bean 容器管理的体系- ApplicationContext 体系。</p>
+</div><div class="cl-preview-section"><h2 id="applicationcontext-简介" style="font-size: 30px;">ApplicationContext 简介</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">BeanFactory 和 ApplicationContext 都是 spring 的 IoC 容器，BeanFactory 提供了一种可以管理任意类型对象的高级配置机制，ApplicationContext 继承自 BeanFactory，并新增了以下功能：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">spring aop 特性的早期集成；</li>
+<li style="font-size: 20px; line-height: 38px;">国际化的 messageSource ；</li>
+<li style="font-size: 20px; line-height: 38px;">事件发布；</li>
+<li style="font-size: 20px; line-height: 38px;">应用层特定的上下文，如 Web 应用层的 WebApplicationContext。</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单的说，BeanFactory 提供了配置框架和基本功能，ApplicationContext 增加了更多特定的企业功能。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">为了更好的理解，我们看看 ApplicationContext 的定义吧：</p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ApplicationContext</span> <span class="token keyword">extends</span> <span class="token class-name">EnvironmentCapable</span><span class="token punctuation">,</span> ListableBeanFactory<span class="token punctuation">,</span> HierarchicalBeanFactory<span class="token punctuation">,</span>  
+   MessageSource<span class="token punctuation">,</span> ApplicationEventPublisher<span class="token punctuation">,</span> ResourcePatternResolver <span class="token punctuation">{</span>  
+ <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ApplicationContext 接口继承众多接口，集众多接口功能与一身，为 Spring 的运行提供基本的功能支撑。根据程序设计的“单一职责原则”，其实每个较顶层接口都是“单一职责的”，只提供某一方面的功能，而 ApplicationContext 接口继承了众多接口，相当于拥有了众多接口的功能。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面看看它的主要功能：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 EnvironmentCapable 的功能，可获取环境相关信息：是开发环境、测试环境、沙箱环境还是生产环境；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 ListableBeanFactory 的功能，可以管理、装配 Bean，可以有父级 BeanFactory 实现 Bean 的层级管理（具体到这里来说它可以有父级的 ApplicationContext，因为 ApplicationContext 本身就是一个 BeanFactory。这在 Web 项目中很有用，可以使每个 Servlet 具有其独立的 context， 所有 Servlet 共享一个父级的 context），它还是 Listable 的，可以枚举出所管理的 Bean 对象；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 HierarchicalBeanFactory 的功能，可以获取父 BeanFactory，也可以根据名称判断 bean 是否在此 beanFactory 中；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 MessageSource 的功能，可以管理一些 Message 实现国际化等功能；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 ApplicationEventPublisher 的功能，可以发布事件给注册的 Listener，实现监听机制；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 ResourcePatternResolver 的功能，可以加载资源不同样式的资源文件。</p>
+</li>
+</ul>
+</div><div class="cl-preview-section"><h2 id="applicationcontext-实例" style="font-size: 30px;">ApplicationContext 实例</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">都说 Talk is cheap. Show me the code，那就来啦。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>javaBean类</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfcab0001c7b704140268.jpg" data-original="//img1.sycdn.imooc.com/5ecdfcab0001c7b704140268.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>配置文件</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">SpringBeans.xml 位于resouces目录下面</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfcc50001c7b308610140.jpg" data-original="//img1.sycdn.imooc.com/5ecdfcc50001c7b308610140.jpg" alt="图片描述"><br>
+<strong>测试类</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfcdf00014faf06400300.jpg" data-original="//img1.sycdn.imooc.com/5ecdfcdf00014faf06400300.jpg" alt="图片描述"><br>
+<strong>代码使用代码框展示(注意缩进及格式)，如下</strong></p>
+</div><div class="cl-preview-section"><pre class="  language-java"><code class="prism  language-java"> <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ApplicationContextTest</span><span class="token punctuation">{</span>  
+     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+         <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"resource"</span><span class="token punctuation">)</span>  
+ ApplicationContext context <span class="token operator">=</span>   
+             <span class="token keyword">new</span> <span class="token class-name">ClassPathXmApplicationContext</span><span class="token punctuation">(</span><span class="token string">"SpringBeans.xml"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+   Employee emp <span class="token operator">=</span> <span class="token punctuation">(</span>Employee<span class="token punctuation">)</span> context<span class="token punctuation">.</span><span class="token function">getBean</span><span class="token punctuation">(</span><span class="token string">"bean1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+   System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>emp<span class="token punctuation">.</span><span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+   <span class="token punctuation">}</span>  
+ <span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上一篇《<a href="http://www.imooc.com/read/77/article/2020">07：别整虚的！揭开 spring IOC、DI 的神秘面纱</a>》，有一个从 XmlBeanFactory 获取 bean 的实例，和本节的 ClassPathXmlApplicationContext 是不是很相似，但后者的程序数量远小于前者哦，ApplicationContext 的功能强大可见一斑。</p>
+</div><div class="cl-preview-section"><h2 id="深入-applicationcontext-原理" style="font-size: 30px;">深入 ApplicationContext 原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">将 Spring-context 源码导入到 Eclipse（或者 IDEA），并创建自己的 package 和 class，如下图：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfd1d0001de4511570176.jpg" data-original="//img1.sycdn.imooc.com/5ecdfd1d0001de4511570176.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">容器的启动</li>
+</ul>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用给定的父容器，创建容器 ClassPathXmlApplicationContext ，从给定的 xml 文件中加载 Bean 定义，如下图：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfd6500013b4b06400315.jpg" data-original="//img1.sycdn.imooc.com/5ecdfd6500013b4b06400315.jpg" alt="图片描述"><br>
+子调用 AbstractApplicationContext.java，如下图：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfd820001b44a05990614.jpg" data-original="//img1.sycdn.imooc.com/5ecdfd820001b44a05990614.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfdb50001cef304410309.jpg" data-original="//img1.sycdn.imooc.com/5ecdfdb50001cef304410309.jpg" alt="图片描述"><br>
+如果一一深入代码，本篇文章的长度会超出想象，故本次抽取关键步骤：获取 BeanFactory 加以深入。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">获取 BeanFactory<br>
+​<br>
+// Tell the subclass to refresh the internal bean factory.<br>
+​<br>
+ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5ecdfdf800016c3606400238.jpg" data-original="//img1.sycdn.imooc.com/5ecdfdf800016c3606400238.jpg" alt="图片描述"><br>
+<strong>其中涉及到 BeanFactory 的产生，读取配置文件 springbeans.xml 中，使用了 ResourceLoader 和ResourcePatternResolver 将文件转换为 Resource 资源</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">另外：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">初始化MessageSource<br>
+// Initialize message source for this context.<br>
+initMessageSource();</p>
+</blockquote>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">初始化事件发射器<br>
+// Initialize event multicaster for this context.<br>
+initApplicationEventMulticaster();</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">罗马不是一天建成的，ApplicationContext 也是站在巨人的肩头的。它的主要功能主要来自于继承：</p>
+</div><div class="cl-preview-section"><ul>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 EnvironmentCapable 的功能，可获取环境相关信息：是开发环境、测试环境、沙箱环境还是生产环境；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 ListableBeanFactory 的功能，可以管理、装配 Bean，可以有父级 BeanFactory 实现 Bean 的层级管理（具体到这里来说它可以有父级的 ApplicationContext，因为 ApplicationContext 本身就是一个 BeanFactory。这在 Web 项目中很有用，可以使每个 Servlet 具有其独立的 context， 所有 Servlet 共享一个父级的 context），它还是 Listable的，可以枚举出所管理的 Bean 对象；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 HierarchicalBeanFactory 的功能，可以获取父 BeanFactory，也可以根据名称判断 bean 是否在此 BeanFactory 中；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 MessageSource 的功能，可以管理一些 Message 实现国际化等功能；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 ApplicationEventPublisher 的功能，可以发布事件给注册的 Listener，实现监听机制；</p>
+</li>
+<li style="font-size: 20px; line-height: 38px;">
+<p style="font-size: 20px; line-height: 38px;">它继承了 ResourcePatternResolver 的功能，可以加载资源不同样式的资源文件。</p>
+</li>
+</ul>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2020">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            07 别整虚的！揭开Spring IoC、DI的神秘面纱
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2024">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            09 Spring IoC容器ApplicationContext如何实现国际化
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

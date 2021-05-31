@@ -1,0 +1,208 @@
+<html><head><meta charset="utf-8"><title>29 Spring MVC之类型转换Converter-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        29 Spring MVC之类型转换Converter
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2020-08-06 13:41:07
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.sycdn.imooc.com/5ecf19c400018c0b06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">加紧学习，抓住中心，宁精勿杂，宁专勿多。 —— 周恩来<p></p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><h2 id="背景" style="font-size: 30px;">背景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在以往我们需要 SpringMVC 为我们自动进行类型转换的时候都是用的 PropertyEditor。通过 PropertyEditor 的 setAsText() 方法我们可以实现字符串向特定类型的转换。但是这里有一个限制是它只支持从 String 类型转为其他类型。在 Spring3 中引入了一个 Converter 接口，它支持从一个 Object 转为另一个 Object。除了 Converter 接口之外，实现 ConverterFactory 接口和 GenericConverter 接口也可以实现我们自己的类型转换逻辑。那么在 spring mvc 中如何实现自定义的 Converter 来实现表单数据转换到特定的类型呢？</p>
+</div><div class="cl-preview-section"><h2 id="springmvc-实现自定义-converter-类型转换器实例" style="font-size: 30px;">SpringMVC 实现自定义 Converter 类型转换器实例</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>Talk is cheap. Show me the code.</strong><br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d1ffe000151eb06400262.jpg" data-original="//img1.sycdn.imooc.com/5f0d1ffe000151eb06400262.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h3 id="准备一个普通的-mvc-项目">准备一个普通的 MVC 项目</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. 创建 Maven 项目，选择 Web 项目</strong>：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d20110001beb006340571.jpg" data-original="//img1.sycdn.imooc.com/5f0d20110001beb006340571.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 添加依赖</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img1.sycdn.imooc.com/5f0d203900015fa905120517.jpg" data-original="//img1.sycdn.imooc.com/5f0d203900015fa905120517.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>3. 修改或者添加配置文件</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">web.xml 替换类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d204a00014bee06400346.jpg" data-original="//img1.sycdn.imooc.com/5f0d204a00014bee06400346.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">dispatcher-servlet.xml 替换类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d206a000117eb06400461.jpg" data-original="//img1.sycdn.imooc.com/5f0d206a000117eb06400461.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>4. 控制器 Controller</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">自定义 converter:StringToDateTimeConverter：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d207c0001328006400273.jpg" data-original="//img1.sycdn.imooc.com/5f0d207c0001328006400273.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">配置自定义 Converter：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d209400019acd06400473.jpg" data-original="//img1.sycdn.imooc.com/5f0d209400019acd06400473.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">测试类：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d20a10001ecd307620239.jpg" data-original="//img1.sycdn.imooc.com/5f0d20a10001ecd307620239.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意，没有使用 InitBinder 注解。</p>
+</div><div class="cl-preview-section"><h3 id="postman-测试">Postman 测试</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">启动 Web 项目，可以添加 Jetty 或者 Tomcat 插件来启动，本文以 Jetty 为例，添加 Jetty 依赖：</p>
+</div><div class="cl-preview-section"><pre class="  language-xml"><code class="prism  language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">&gt;</span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.eclipse.jetty<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>jetty-maven-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>9.4.8.v20171121<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">&gt;</span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 <code>jetty:run</code> 启动，然后利用 Postman 进行测试。<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d20b00001544d06400451.jpg" data-original="//img1.sycdn.imooc.com/5f0d20b00001544d06400451.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="深入自定义-converter-实现原理" style="font-size: 30px;">深入自定义 Converter 实现原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. 初始化</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">web 容器启动时，抛出异常，查看调用链：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d20ef0001ba9405470330.jpg" data-original="//img1.sycdn.imooc.com/5f0d20ef0001ba9405470330.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">异常如下：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d20ff0001600410260168.jpg" data-original="//img1.sycdn.imooc.com/5f0d20ff0001600410260168.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. 去掉异常，追踪源码，查看背后</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">TypeConverterDelegate#convertIfNecessary ：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f293f93000144e412810864.png" data-original="//img1.sycdn.imooc.com/5f293f93000144e412810864.png" alt="图片描述"><br>
+GenericConversionService#convert 封装了 converter 的实现：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f2b97ef000135e708240302.jpg" data-original="//img1.sycdn.imooc.com/5f2b97ef000135e708240302.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">完整的流程如下图：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f29411c0001d91c16000436.jpg" data-original="//img1.sycdn.imooc.com/5f29411c0001d91c16000436.jpg" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="拓展-propertyeditor-还是-converter" style="font-size: 30px;">拓展 PropertyEditor 还是 Converter</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>1. PropertyEditor</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">定义：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d214800019d2a05900448.jpg" data-original="//img1.sycdn.imooc.com/5f0d214800019d2a05900448.jpg" alt="图片描述"><br>
+适用场景 GUI 传递的参数转换，通常是 String–各种对象。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>2. Converter</strong>：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">定义：<br>
+<img class="" src="https://img1.sycdn.imooc.com/5f0d215f000120b306400356.jpg" data-original="//img1.sycdn.imooc.com/5f0d215f000120b306400356.jpg" alt="图片描述"><br>
+PropertyEditor 的扩展，它支持从一个 Object 转为另一个 Object。</p>
+</div><div class="cl-preview-section"><h2 id="总结" style="font-size: 30px;">总结</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过 PropertyEditor 的 setAsText()方法我们可以实现字符串向特定类型的转换。适用场景为 web 前后之间数据的传递。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Converter 接口，它支持从一个 Object 转为另一个 Object。除了 Converter 接口之外，实现 ConverterFactory 接口和 GenericConverter 接口也可以实现我们自己的类型转换逻辑。适用于业务逻辑内部。可以用 @Autowired 来引入 ConversionService</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2042">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            28 百变星君Converter实现示例及背后原理探究
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/77/article/2044">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            30 Spring Core格式化Formatter实现示例及背后原理探究
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img3.sycdn.imooc.com/5f1a80010001c9a105340522.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课Java核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">2011161431052393</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：314316732</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=OouwHZGZ" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>
